@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "appName": "Uplatnica CG",
+    "title": "Nalog za plaćanje (uplatnica) za Crnu Goru — besplatni generator",
+    "description": "Popunite i odštampajte nalog za plaćanje po propisima CBCG: porezi, doprinosi, takse i kazne sa tačnim računima i pozivom na broj. Besplatno, bez registracije."
+  },
+  "hero": {
+    "title": "Nalog za plaćanje za Crnu Goru",
+    "lead": "Popunite nalog direktno na obrascu i odštampajte ga ili preuzmite kao PDF. Za poreze, takse i kazne izaberite gotov nalog ispod."
+  },
+  "kinds": {
+    "uplata": { "title": "Uplata", "hint": "gotovinom na šalteru" },
+    "prenos": { "title": "Prenos", "hint": "sa vašeg računa" }
+  },
+  "form": {
+    "payerPlaceholder": "Marko Marković\nBeogradska 15\nPodgorica",
+    "payeePlaceholder": "Naziv primaoca\nUlica i broj, mjesto"
+  },
+  "slip": {
+    "payer": "Naziv platioca",
+    "purpose": "Svrha plaćanja",
+    "payee": "Naziv primaoca plaćanja",
+    "payerAccount": "Račun platioca",
+    "model": "Model",
+    "debitReference": "Poziv na broj zaduženja",
+    "amount": "Iznos",
+    "paymentCode": "Šifra plaćanja",
+    "account": "Račun primaoca",
+    "reference": "Poziv na broj odobrenja",
+    "place": "Mjesto i datum podnošenja",
+    "urgent": "Hitnost",
+    "urgentHint": "instant prenos, do 3.000 EUR"
+  },
+  "errors": {
+    "payer": { "required": "Upišite ime i adresu platioca", "tooLong": "Najviše {lines} reda po {lineLength} znakova" },
+    "purpose": { "required": "Upišite svrhu plaćanja", "tooLong": "Najviše {lines} reda po {lineLength} znakova" },
+    "payee": { "required": "Upišite primaoca", "tooLong": "Najviše {lines} reda po {lineLength} znakova" },
+    "payerAccount": { "invalid": "Račun ima 18 cifara: 510-12345-67", "checksum": "Kontrolni broj računa nije ispravan" },
+    "debitModel": { "invalid": "Model ima 2 cifre" },
+    "debitReference": { "tooLong": "Najviše {reference} znakova", "invalid": "Dozvoljene su cifre, slova, crtica, kosa crta i razmak" },
+    "amount": { "invalid": "Upišite iznos, npr. 1.500,00" },
+    "paymentCode": { "invalid": "Šifra plaćanja ima 3 cifre" },
+    "account": { "required": "Upišite račun primaoca", "invalid": "Račun ima 18 cifara: 510-12345-67 ili IBAN ME25…", "checksum": "Kontrolni broj računa nije ispravan, provjerite cifre" },
+    "model": { "invalid": "Model ima 2 cifre" },
+    "reference": {
+      "tooLong": "Najviše {reference} znakova",
+      "invalid": "Dozvoljene su cifre, slova, crtica, kosa crta i razmak",
+      "format18": "Za model 18: PIB (8 cifara) ili JMB (13 cifara), crtica i šifra od 3 cifre",
+      "id": "Kontrolna cifra PIB-a ili JMB-a nije ispravna"
+    }
+  },
+  "actions": {
+    "example": "Popuni primjer",
+    "clear": "Očisti",
+    "print": "Štampaj",
+    "pdf": "Preuzmi PDF",
+    "copy": "Kopiraj",
+    "copied": "Kopirano",
+    "close": "Zatvori"
+  },
+  "share": {
+    "title": "Nalog za plaćanje",
+    "copyLink": "Podijeli link",
+    "loaded": "Nalog je popunjen iz primljenog linka. Prije plaćanja provjerite račun i iznos."
+  },
+  "batch": {
+    "add": "Dodaj u paket",
+    "save": "Sačuvaj izmjene",
+    "title": "Paket za štampu",
+    "count": "{n} naloga, {pages} str.",
+    "edit": "izmijeni",
+    "delete": "ukloni",
+    "download": "Preuzmi PDF ({n})",
+    "building": "Pravim PDF…",
+    "clear": "Isprazni paket"
+  },
+  "flash": {
+    "linked": "Link je kopiran",
+    "added": "Dodato u paket"
+  },
+  "templates": {
+    "title": "Gotovi nalozi",
+    "categories": { "taxes": "Porezi", "local": "Opštine", "fines": "Kazne", "documents": "Dokumenta" },
+    "blank": "prazan nalog",
+    "metaTitle": "{title} — Uplatnica CG",
+    "notes": "Napomene",
+    "sources": "Izvori",
+    "checked": "Podaci provjereni {date}. Prije plaćanja uporedite ih sa rješenjem ili računom."
+  },
+  "reference": {
+    "title": "Poziv na broj po modelu 18",
+    "lead": "Za poreze, doprinose i lokalne prihode: PIB ili JMB, crtica i šifra opštine. Rezultat se odmah upisuje u nalog.",
+    "id": "PIB ili JMB",
+    "idHint": "PIB ima 8 cifara (pravna lica), JMB 13 (fizička lica)",
+    "jmbInvalid": "Kontrolna cifra JMB-a nije ispravna",
+    "pibInvalid": "Kontrolna cifra PIB-a nije ispravna",
+    "municipality": "Opština",
+    "choose": "izaberite…",
+    "noAccount": "Ova opština nema takav račun u Naredbi, upišite račun iz rješenja.",
+    "codes": "Šifre svih opština",
+    "code": "Šifra",
+    "propertyTax": "Porez na nepokretnosti"
+  },
+  "account": {
+    "title": "Provjera računa i IBAN",
+    "label": "Račun ili IBAN",
+    "valid": "Račun je ispravan",
+    "invalid": "Kontrolni broj nije ispravan, trebalo bi da bude {control}",
+    "paper": "Na nalogu",
+    "digits": "Elektronski (18 cifara)",
+    "bank": "Banka",
+    "unknownBank": "nepoznat kod banke",
+    "banks": "Kodovi banaka i državnih računa"
+  },
+  "faq": {
+    "title": "Česta pitanja",
+    "what": { "q": "Šta je nalog za plaćanje?", "a": "To je jedinstveni obrazac platnog prometa u Crnoj Gori, veličine trećine A4 lista. Elemente i raspored polja propisuje Centralna banka Crne Gore." },
+    "kinds": { "q": "Koja je razlika između „Uplata” i „Prenos”?", "a": "„Uplata” znači da plaćate gotovinom na šalteru banke ili pošte, pa račun platioca ostaje prazan. „Prenos” je plaćanje sa vašeg računa: upisuje se račun platioca, a oznaka „Hitnost” šalje novac instant prenosom." },
+    "model18": { "q": "Kako se popunjava poziv na broj za poreze?", "a": "Za javne prihode koristi se model 18. U poziv na broj odobrenja upisuje se PIB (8 cifara) ili JMB (13 cifara), crtica i šifra opštine od 3 cifre, npr. 02088762-302 za Podgoricu. U zaduženje ide poreski period." },
+    "model05": { "q": "Kada se koristi model 05?", "a": "Model 05 koriste Uprava carina, Ministarstvo unutrašnjih poslova i Uprava policije. Poziv na broj za MUP ima 9 cifara i dobija se na šalteru." },
+    "iban": { "q": "Da li mi treba IBAN?", "a": "Za plaćanje u Crnoj Gori ne. Na nalogu se piše račun od 18 cifara, npr. 510-12345-67. IBAN (ME25 + tih 18 cifara) treba za uplate iz inostranstva." },
+    "qr": { "q": "Zašto nalog nema QR kod?", "a": "Crna Gora još nema zvanični standard QR koda za plaćanje. Kada ga Centralna banka objavi, dodaćemo ga." },
+    "privacy": { "q": "Da li se moji podaci negdje čuvaju?", "a": "Ne. Nalog se pravi u vašem pregledaču. Podaci se ne šalju na server, a nacrt se čuva samo lokalno na vašem uređaju." },
+    "batch": { "q": "Kako da odštampam više naloga odjednom?", "a": "Popunite nalog i kliknite „Dodaj u paket”, pa izmijenite podatke za sljedeći. „Preuzmi PDF” u paketu pravi jedan fajl sa tri naloga po A4 strani." },
+    "share": { "q": "Kako da pošaljem popunjen nalog nekome?", "a": "Kliknite „Podijeli link”. Podaci su u samom linku, iza znaka #, pa ne prolaze kroz server." }
+  },
+  "donate": {
+    "button": "Zahvali autoru",
+    "title": "Zahvali autoru",
+    "lead": "Sajt je besplatan i bez reklama. Ako vam je koristio, možete podržati dalji razvoj.",
+    "empty": "Načini podrške još nisu podešeni.",
+    "tabs": { "bank": "Bankom", "crypto": "Kripto", "links": "Servisi" },
+    "bankHint": "Uplata na račun autora iz bilo koje banke.",
+    "name": "Primalac",
+    "cryptoWarn": "Šaljite samo navedeni token na navedenoj mreži, inače se sredstva mogu izgubiti."
+  },
+  "footer": {
+    "disclaimer": "Uplatnica CG nije povezana sa CBCG, Upravom prihoda i carina ni sa bankama. Prije plaćanja provjerite podatke primaoca."
+  },
+  "nav": {
+    "generator": "Nalog za plaćanje"
+  }
+}

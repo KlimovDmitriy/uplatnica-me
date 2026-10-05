@@ -1,0 +1,143 @@
+{
+  "meta": {
+    "appName": "Uplatnica CG",
+    "title": "Montenegro payment order (nalog za plaćanje) — free generator",
+    "description": "Fill in and print a Montenegrin payment order to the CBCG rules: taxes, contributions, fees and fines with the right accounts and references. Free, no sign-up."
+  },
+  "hero": {
+    "title": "Payment order for Montenegro",
+    "lead": "Type straight into the form, then print it or download a PDF. For taxes, fees and fines pick a ready-made order below."
+  },
+  "kinds": {
+    "uplata": { "title": "Uplata", "hint": "cash at the counter" },
+    "prenos": { "title": "Prenos", "hint": "from your account" }
+  },
+  "form": {
+    "payerPlaceholder": "Marko Marković\nBeogradska 15\nPodgorica",
+    "payeePlaceholder": "Payee name\nStreet and number, town"
+  },
+  "slip": {
+    "payer": "Payer",
+    "purpose": "Purpose",
+    "payee": "Payee",
+    "payerAccount": "Payer account",
+    "model": "Model",
+    "debitReference": "Debit reference",
+    "amount": "Amount",
+    "paymentCode": "Payment code",
+    "account": "Payee account",
+    "reference": "Credit reference",
+    "place": "Place and date",
+    "urgent": "Hitnost (urgent)",
+    "urgentHint": "instant transfer, up to 3,000 EUR"
+  },
+  "errors": {
+    "payer": { "required": "Enter the payer's name and address", "tooLong": "At most {lines} lines of {lineLength} characters" },
+    "purpose": { "required": "Enter the purpose", "tooLong": "At most {lines} lines of {lineLength} characters" },
+    "payee": { "required": "Enter the payee", "tooLong": "At most {lines} lines of {lineLength} characters" },
+    "payerAccount": { "invalid": "An account has 18 digits: 510-12345-67", "checksum": "The account check digits are wrong" },
+    "debitModel": { "invalid": "The model has 2 digits" },
+    "debitReference": { "tooLong": "At most {reference} characters", "invalid": "Use digits, letters, dash, slash and space" },
+    "amount": { "invalid": "Enter an amount, e.g. 1.500,00" },
+    "paymentCode": { "invalid": "The payment code has 3 digits" },
+    "account": { "required": "Enter the payee account", "invalid": "An account has 18 digits: 510-12345-67, or an IBAN ME25…", "checksum": "The account check digits are wrong, check the number" },
+    "model": { "invalid": "The model has 2 digits" },
+    "reference": {
+      "tooLong": "At most {reference} characters",
+      "invalid": "Use digits, letters, dash, slash and space",
+      "format18": "For model 18: PIB (8 digits) or JMB (13 digits), a dash and a 3-digit code",
+      "id": "The PIB or JMB check digit is wrong"
+    }
+  },
+  "actions": {
+    "example": "Fill in an example",
+    "clear": "Clear",
+    "print": "Print",
+    "pdf": "Download PDF",
+    "copy": "Copy",
+    "copied": "Copied",
+    "close": "Close"
+  },
+  "share": {
+    "title": "Payment order",
+    "copyLink": "Share link",
+    "loaded": "The order was filled from a shared link. Check the account and amount before paying."
+  },
+  "batch": {
+    "add": "Add to batch",
+    "save": "Save changes",
+    "title": "Print batch",
+    "count": "{n} orders, {pages} pages",
+    "edit": "edit",
+    "delete": "remove",
+    "download": "Download PDF ({n})",
+    "building": "Building PDF…",
+    "clear": "Empty the batch"
+  },
+  "flash": {
+    "linked": "Link copied",
+    "added": "Added to the batch"
+  },
+  "templates": {
+    "title": "Ready-made orders",
+    "categories": { "taxes": "Taxes", "local": "Municipalities", "fines": "Fines", "documents": "Documents" },
+    "blank": "blank order",
+    "metaTitle": "{title} — Uplatnica CG",
+    "notes": "Notes",
+    "sources": "Sources",
+    "checked": "Data checked {date}. Compare it with your decision or bill before paying."
+  },
+  "reference": {
+    "title": "Model 18 reference number",
+    "lead": "For taxes, contributions and local revenues: PIB or JMB, a dash and the municipality code. The result goes straight into the order.",
+    "id": "PIB or JMB",
+    "idHint": "PIB has 8 digits (companies), JMB 13 (individuals)",
+    "jmbInvalid": "The JMB check digit is wrong",
+    "pibInvalid": "The PIB check digit is wrong",
+    "municipality": "Municipality",
+    "choose": "choose…",
+    "noAccount": "The order lists no such account for this municipality: use the one from your decision.",
+    "codes": "Codes of all municipalities",
+    "code": "Code",
+    "propertyTax": "Property tax"
+  },
+  "account": {
+    "title": "Account and IBAN check",
+    "label": "Account or IBAN",
+    "valid": "The account is valid",
+    "invalid": "Wrong check digits, they should be {control}",
+    "paper": "On the order",
+    "digits": "Electronic (18 digits)",
+    "bank": "Bank",
+    "unknownBank": "unknown bank code",
+    "banks": "Bank and state account codes"
+  },
+  "faq": {
+    "title": "Questions",
+    "what": { "q": "What is a nalog za plaćanje?", "a": "The single payment form used in Montenegro, a third of an A4 sheet. Its fields and layout are set by the Central Bank of Montenegro." },
+    "kinds": { "q": "What is the difference between “Uplata” and “Prenos”?", "a": "“Uplata” is paying cash at a bank or post office counter, so the payer account stays empty. “Prenos” is paying from your account: you enter it, and ticking “Hitnost” sends the money as an instant transfer." },
+    "model18": { "q": "How do I fill the reference for taxes?", "a": "Public revenues use model 18. The credit reference is your PIB (8 digits) or JMB (13 digits), a dash and the 3-digit municipality code, e.g. 02088762-302 for Podgorica. The debit reference is the tax period." },
+    "model05": { "q": "When is model 05 used?", "a": "Model 05 is used by Customs, the Ministry of Interior and the Police. The Ministry's reference has 9 digits and is given at the counter." },
+    "iban": { "q": "Do I need an IBAN?", "a": "Not for payments within Montenegro: the order uses the 18-digit account, e.g. 510-12345-67. The IBAN (ME25 plus those 18 digits) is for payments from abroad." },
+    "qr": { "q": "Why is there no QR code?", "a": "Montenegro has no official payment QR standard yet. We'll add it once the Central Bank publishes one." },
+    "privacy": { "q": "Is my data stored anywhere?", "a": "No. The order is built in your browser. Nothing is sent to a server, and the draft is kept only on your device." },
+    "batch": { "q": "How do I print several orders at once?", "a": "Fill in an order, click “Add to batch”, then change it for the next one. “Download PDF” in the batch makes one file with three orders per A4 page." },
+    "share": { "q": "How do I send a filled order to someone?", "a": "Click “Share link”. The data sits in the link itself after the # sign, so it never passes through a server." }
+  },
+  "donate": {
+    "button": "Thank the author",
+    "title": "Thank the author",
+    "lead": "The site is free and has no ads. If it helped you, you can support its development.",
+    "empty": "Ways to support are not set up yet.",
+    "tabs": { "bank": "Bank", "crypto": "Crypto", "links": "Services" },
+    "bankHint": "A transfer to the author's account from any bank.",
+    "name": "Payee",
+    "cryptoWarn": "Send only the listed token on the listed network, otherwise the funds may be lost."
+  },
+  "footer": {
+    "disclaimer": "Uplatnica CG is not affiliated with the CBCG, the Revenue and Customs Administration or any bank. Check the payee details before paying."
+  },
+  "nav": {
+    "generator": "Payment order"
+  }
+}
