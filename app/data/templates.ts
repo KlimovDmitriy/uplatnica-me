@@ -450,6 +450,80 @@ export const TEMPLATES: PaymentTemplate[] = [
     sources: [NAREDBA, MUP_PASSPORT],
     checkedAt: '2026-10',
   },
+  {
+    slug: 'boravak-stranaca',
+    category: 'documents',
+    name: { sr: 'Boravak stranaca', en: 'Residence for foreigners', ru: 'ВНЖ для иностранцев' },
+    title: { sr: 'Nalozi za plaćanje privremenog boravka stranaca', en: 'Payment orders for a foreigner’s temporary residence', ru: 'Платёжки на временное проживание иностранца' },
+    metaDescription: {
+      sr: 'Boravak stranaca: zahtjev 2,00 EUR na 825-50-71, taksa (20–60 EUR) i obrazac 5,00 EUR na 825-42-95, model 05.',
+      en: 'Foreigners’ residence: application 2.00 EUR to 825-50-71, fee (20–60 EUR) and form 5.00 EUR to 825-42-95, model 05.',
+      ru: 'ВНЖ иностранца: заявление 2,00 EUR на 825-50-71, сбор (20–60 EUR) и бланк 5,00 EUR на 825-42-95, модель 05.',
+    },
+    intro: {
+      sr: 'Za dozvolu za privremeni boravak ili boravak i rad plaćaju se tri naloga: zahtjev, administrativna taksa i obrazac dozvole. Svi idu na račune MUP-a, model 05.',
+      en: 'A temporary residence or residence-and-work permit takes three orders: the application, the administrative fee and the permit form. All go to Ministry of Interior accounts, model 05.',
+      ru: 'За разрешение на временное проживание или проживание и работу платятся три платёжки: заявление, административный сбор и бланк разрешения. Все на счета МВД, модель 05.',
+    },
+    payments: [
+      {
+        id: 'zahtjev',
+        label: { sr: 'Zahtjev', en: 'Application', ru: 'Заявление' },
+        preset: { account: '825-50-71', payee: 'Ministarstvo unutrašnjih poslova\nOstali prihodi', purpose: 'Zahtjev za privremeni boravak', amount: '2,00', model: '05' },
+        referenceHint: MUP_REFERENCE,
+      },
+      {
+        id: 'taksa',
+        label: { sr: 'Administrativna taksa', en: 'Administrative fee', ru: 'Админ. сбор' },
+        preset: { account: '825-42-95', payee: 'Ministarstvo unutrašnjih poslova\nPrihodi od izdavanja isprava', purpose: 'Administrativna taksa za boravak', amount: '', model: '05' },
+        referenceHint: MUP_REFERENCE,
+        amountNote: {
+          sr: 'Prvi privremeni boravak i rad 60 EUR, produženje 30 EUR; spajanje porodice ili boravak po osnovu nekretnine (prvi put) 40 EUR, produženje spajanja porodice 20 EUR; učenici i studenti ne plaćaju taksu.',
+          en: 'First temporary residence and work permit 60 EUR, extension 30 EUR; family reunification or residence based on property (first issue) 40 EUR, extension of family reunification 20 EUR; students pay no fee.',
+          ru: 'Первое временное проживание и работа 60 EUR, продление 30 EUR; воссоединение семьи или проживание по недвижимости (первая выдача) 40 EUR, продление воссоединения семьи 20 EUR; студенты и учащиеся сбор не платят.',
+        },
+      },
+      {
+        id: 'obrazac',
+        label: { sr: 'Obrazac dozvole', en: 'Permit form', ru: 'Бланк разрешения' },
+        preset: { account: '825-42-95', payee: 'Ministarstvo unutrašnjih poslova\nPrihodi od izdavanja isprava', purpose: 'Obrazac dozvole za boravak', amount: '5,00', model: '05' },
+        referenceHint: MUP_REFERENCE,
+      },
+    ],
+    fees: [
+      { label: { sr: 'Zahtjev', en: 'Application', ru: 'Заявление' }, amount: 2 },
+      { label: { sr: 'Taksa: prvi boravak i rad', en: 'Fee: first residence and work', ru: 'Сбор: первое проживание и работа' }, amount: 60 },
+      { label: { sr: 'Taksa: produženje boravka i rada', en: 'Fee: residence and work extension', ru: 'Сбор: продление проживания и работы' }, amount: 30 },
+      { label: { sr: 'Taksa: porodica ili nekretnina (prvi put)', en: 'Fee: family or property (first issue)', ru: 'Сбор: семья или недвижимость (первая выдача)' }, amount: 40 },
+      { label: { sr: 'Taksa: produženje, porodica', en: 'Fee: family extension', ru: 'Сбор: продление по семье' }, amount: 20 },
+      { label: { sr: 'Obrazac dozvole', en: 'Permit form', ru: 'Бланк разрешения' }, amount: 5 },
+    ],
+    notes: [
+      {
+        sr: 'Iznosi i računi potiču iz Zakona o administrativnim taksama (tarifni broj 13) i državnih informativnih stranica. Biznis portal za zahtjev navodi 5,00 EUR; ako vam na šalteru kažu drugi iznos ili račun, platite kako kažu.',
+        en: 'Amounts and accounts come from the Law on Administrative Fees (tariff no. 13) and government information pages. The biznis portal lists 5.00 EUR for the application; if the counter names a different amount or account, pay as they say.',
+        ru: 'Суммы и счета взяты из Zakona o administrativnim taksama (тарифный номер 13) и государственных информационных страниц. Портал biznis.gov.me для заявления указывает 5,00 EUR; если в окошке назовут другую сумму или счёт, платите так, как скажут.',
+      },
+      {
+        sr: 'Pri elektronskom podnošenju zahtjeva taksa se plaća preko sistema za elektronsku naplatu administrativnih taksi. Ovaj nalog služi za plaćanje u banci ili na pošti.',
+        en: 'When you apply online, the fee is paid through the electronic payment system for administrative fees. This order is for paying at a bank or post office.',
+        ru: 'При подаче заявления онлайн сбор платится через систему электронной оплаты административных сборов. Эта платёжка нужна для оплаты в банке или на почте.',
+      },
+      {
+        sr: 'Za boravak po osnovu nekretnine od 2026. potrebna je nepokretnost čija je osnovica poreza na promet najmanje 150.000 EUR (Sl. list CG 3/26).',
+        en: 'Residence based on property now requires a property whose transfer-tax base is at least 150,000 EUR (Sl. list CG 3/26).',
+        ru: 'Для проживания по недвижимости с 2026 года нужна недвижимость с базой налога на оборот не менее 150 000 EUR (Sl. list CG 3/26).',
+      },
+    ],
+    sources: [
+      { label: 'ZZZCG: privremena dozvola za boravak i rad stranaca', url: 'https://www.zzzcg.me/privremena-dozvola-za-boravak-i-rad-stranaca/' },
+      { label: 'MUP: privremeni boravak i rad, radna dozvola', url: 'https://psc.gov.me/me/sektorske-informacije/ministarstvo-unutrasnjih-poslova/privremeni-boravak-i-rad-radna-dozvola' },
+      { label: 'biznis.gov.me: boravak za strance', url: 'https://biznis.gov.me/vodici-i-informacije/boravak-za-strance-na-osnovu-zaposlenja-sezonskog-rada-ili-prekogranicnih-usluga-6' },
+      { label: 'Zakon o administrativnim taksama, tarifni broj 13', url: 'https://wapi.gov.me/download/301e146a-19a5-4b03-9fde-c6b6b56b2d00?version=1.0' },
+      { label: 'Zakon o izmjenama i dopunama Zakona o strancima (Sl. list CG 3/26)', url: 'https://www.sluzbenilist.me/propisi/389913' },
+    ],
+    checkedAt: '2026-10',
+  },
 ]
 
 export const findTemplate = (slug: string) => TEMPLATES.find(t => t.slug === slug)
