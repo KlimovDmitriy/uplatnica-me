@@ -23,7 +23,7 @@ const { t } = useI18n()
             {{ m.code }}
           </td>
           <td class="mono">
-            {{ m.accounts.nepokretnosti }}
+            {{ m.accounts.nepokretnosti ?? '—' }}
           </td>
         </tr>
       </tbody>

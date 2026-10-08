@@ -35,7 +35,7 @@ describe('accounts', () => {
   })
 
   it('checks mod 97 on accounts from the official samples', () => {
-    for (const a of ['820-30000-74', '805-955-02', '832-20000-46', '840-80-82', '540-3028014-56']) {
+    for (const a of ['820-30000-74', '805-955-02', '832-20000-46', '840-80-82', '510-30280140-23']) {
       expect(isAccountChecksumValid(normalizeAccount(a)!), a).toBe(true)
     }
     expect(isAccountChecksumValid(normalizeAccount('820-30000-75')!)).toBe(false)

@@ -22,7 +22,7 @@ const expected = computed(() => (account.value && !valid.value ? accountControl(
       <input
         v-model="input"
         inputmode="text"
-        placeholder="540-3028014-56 / ME25 …"
+        placeholder="510-30280140-23 / ME25 …"
         autocomplete="off"
       >
     </label>

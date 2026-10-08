@@ -43,7 +43,7 @@ const exampleForm = (): Partial<SlipForm> => ({
   purpose: 'Porez na nepokretnosti za 2026.',
   payee: 'Glavni grad Podgorica\nPorez na nepokretnosti',
   amount: '85,40',
-  account: '540-3028014-56',
+  account: '510-30280140-23',
   debitReference: '2026',
   model: '18',
   reference: '0205973210263-302',

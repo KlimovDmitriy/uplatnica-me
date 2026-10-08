@@ -13,7 +13,7 @@ const form: SlipForm = {
   debitReference: '',
   amount: '450,00',
   paymentCode: '',
-  account: '540-3028014-56',
+  account: '510-30280140-23',
   model: '18',
   reference: '0205973210263-302',
   place: 'Podgorica',

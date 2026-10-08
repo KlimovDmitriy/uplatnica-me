@@ -45,9 +45,10 @@ export interface PaymentTemplate {
   checkedAt: string
 }
 
-const NAREDBA = { label: 'Naredba o načinu uplate javnih prihoda (Sl. list CG 121/23, 81/24)', url: 'https://wapi.gov.me/download/be7cbd18-1841-4cd5-83c5-f579d623f868?version=1.0' }
-const PRILOZI = { label: 'Prilozi Naredbe 121/23: šifre opština i uzorci naloga', url: 'http://podaci.net/dodaci/CGO/N-nujpri04v23C1_Prilozi.pdf' }
-const MUP_DOCS = { label: 'MUP: lična karta i pasoš (brošura)', url: 'https://wapi.gov.me/download/72472d10-7eb4-49ac-b76d-a2f4c61c183c?version=1.0' }
+const NAREDBA = { label: 'Naredba o načinu uplate javnih prihoda (Sl. list CG 23/26)', url: 'https://www.sluzbenilist.me/propisi/391599' }
+const PRILOZI = { label: 'Naredba 23/26: šifre opština (Prilog 1)', url: 'https://www.sluzbenilist.me/propisi/391599?page=72' }
+const MUP_PASSPORT = { label: 'MUP: izdavanje pasoša (14.01.2025)', url: 'https://www.gov.me/dokumenta/d765c42e-bdff-4fc4-b667-dff1001d0722' }
+const MUP_ID = { label: 'MUP: izdavanje lične karte', url: 'https://wapi.gov.me/download/74f6a13f-f56f-4fc0-a129-df01d062e93f?version=1.0' }
 
 const TAX_REFERENCE: Localized = {
   sr: 'Odobrenje: model 18, PIB (pravna lica) ili JMB (fizička lica), crtica i šifra opštine. Zaduženje: poreski period, npr. IX/2026.',
@@ -119,7 +120,7 @@ export const TEMPLATES: PaymentTemplate[] = [
       ru: 'Отдельные счета взносов (820-81…, 820-82…, 820-83…) нужны только для обязательств до 31.12.2010.',
     }],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'pdv',
@@ -143,7 +144,7 @@ export const TEMPLATES: PaymentTemplate[] = [
       ru: 'НДС на услуги иностранных лиц платится на отдельный счёт 820-15112-21.',
     }],
     sources: [NAREDBA],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'porez-na-dobit',
@@ -163,7 +164,7 @@ export const TEMPLATES: PaymentTemplate[] = [
     payments: [TAX('uplata', '820-12111-03', 'Porez na dobit rezidentnog\npravnog lica', 'Porez na dobit')],
     notes: [],
     sources: [NAREDBA],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'porez-na-promet-nepokretnosti',
@@ -181,9 +182,13 @@ export const TEMPLATES: PaymentTemplate[] = [
       ru: 'Платится по решению налоговой после купли-продажи. Код общины — той, где находится недвижимость.',
     },
     payments: [TAX('uplata', '820-13111-10', 'Porez na promet nepokretnosti', 'Porez na promet nepokretnosti')],
-    notes: [],
+    notes: [{
+      sr: 'Naredba 23/26 navodi i račune opština za ovaj porez. Uporedite račun sa svojim rješenjem prije uplate.',
+      en: 'Naredba 23/26 also lists municipal accounts for this tax. Compare the account with your decision (rješenje) before paying.',
+      ru: 'В Naredbe 23/26 есть и счета общин для этого налога. Перед оплатой сверьте счёт со своим решением (rješenje).',
+    }],
     sources: [NAREDBA],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'porez-na-upotrebu-vozila',
@@ -207,7 +212,7 @@ export const TEMPLATES: PaymentTemplate[] = [
       ru: 'При регистрации кроме налога платятся ещё коммунальный сбор общины и сборы МВД.',
     }],
     sources: [NAREDBA],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'porez-na-nepokretnosti',
@@ -229,9 +234,13 @@ export const TEMPLATES: PaymentTemplate[] = [
       sr: 'Ako rješenje sadrži drugačiji poziv na broj, upišite onaj iz rješenja.',
       en: 'If the decision gives a different reference, use the one from the decision.',
       ru: 'Если в решении указан другой poziv na broj, пишите тот, что в решении.',
+    }, {
+      sr: 'Pljevlja: tekući porez plaća se na 535-5078001-23 (porez na zemljište) i 535-5078002-20 (porez na građevinske objekte). Račun 535-5078014-81 služi samo za obaveze iz ranijih godina.',
+      en: 'Pljevlja: the current property tax goes to 535-5078001-23 (land tax) and 535-5078002-20 (tax on buildings). 535-5078014-81 is only for obligations from earlier years.',
+      ru: 'Плевля: текущий налог платится на 535-5078001-23 (налог на землю) и 535-5078002-20 (налог на строения). Счёт 535-5078014-81 только для обязательств прошлых лет.',
     }],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'prirez',
@@ -251,7 +260,7 @@ export const TEMPLATES: PaymentTemplate[] = [
     payments: [LOCAL('prirez', 'Prirez porezu na dohodak', 'Prirez porezu na dohodak')],
     notes: [],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'boravisna-taksa',
@@ -270,12 +279,12 @@ export const TEMPLATES: PaymentTemplate[] = [
     },
     payments: [LOCAL('boravisna', 'Boravišna taksa', 'Boravišna taksa')],
     notes: [{
-      sr: 'Petnjica i Zeta nemaju poseban račun boravišne takse u Naredbi. Nacionalna turistička organizacija ima račun 832-3205-88.',
-      en: 'Petnjica and Zeta have no tourist tax account in the order. The National Tourism Organisation account is 832-3205-88.',
-      ru: 'У Петницы и Зеты нет отдельного счёта туристического сбора. Счёт Национальной туристической организации: 832-3205-88.',
+      sr: 'Petnjica nema poseban račun boravišne takse u Naredbi. Nacionalna turistička organizacija ima račun 832-3205-88.',
+      en: 'Petnjica has no tourist tax account in the order. The National Tourism Organisation account is 832-3205-88.',
+      ru: 'У Петницы нет отдельного счёта туристического сбора. Счёт Национальной туристической организации: 832-3205-88.',
     }],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'lokalne-administrativne-takse',
@@ -295,7 +304,7 @@ export const TEMPLATES: PaymentTemplate[] = [
     payments: [LOCAL('adminTakse', 'Lokalne administrativne takse', 'Lokalna administrativna taksa')],
     notes: [],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'saobracajna-kazna',
@@ -336,7 +345,7 @@ export const TEMPLATES: PaymentTemplate[] = [
       ru: 'Штрафы, назначенные судом по правонарушениям, платятся на счёт этого суда (832-7160-57 Подгорица, 832-7161-54 Бело-Поле, 832-7163-48 Будва).',
     }],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'kazna-lokalne-samouprave',
@@ -372,7 +381,7 @@ export const TEMPLATES: PaymentTemplate[] = [
     }],
     notes: [FINE_NOTE],
     sources: [NAREDBA, PRILOZI],
-    checkedAt: '2026-09',
+    checkedAt: '2026-10',
   },
   {
     slug: 'licna-karta',
@@ -397,8 +406,8 @@ export const TEMPLATES: PaymentTemplate[] = [
     }],
     fees: [{ label: { sr: 'Obrazac lične karte', en: 'ID card form', ru: 'Бланк личной карты' }, amount: 5 }],
     notes: [],
-    sources: [NAREDBA, MUP_DOCS],
-    checkedAt: '2026-09',
+    sources: [NAREDBA, MUP_ID],
+    checkedAt: '2026-10',
   },
   {
     slug: 'pasos',
@@ -406,9 +415,9 @@ export const TEMPLATES: PaymentTemplate[] = [
     name: { sr: 'Pasoš', en: 'Passport', ru: 'Паспорт' },
     title: { sr: 'Nalozi za plaćanje pasoša', en: 'Payment orders for a passport', ru: 'Платёжки на паспорт' },
     metaDescription: {
-      sr: 'Pasoš: obrazac 15,00 EUR na 825-42-95 i administrativna taksa 25,00 EUR na 825-55-56, model 05.',
-      en: 'Passport: form 15.00 EUR to 825-42-95 and administrative fee 25.00 EUR to 825-55-56, model 05.',
-      ru: 'Паспорт: бланк 15,00 EUR на 825-42-95 и административный сбор 25,00 EUR на 825-55-56, модель 05.',
+      sr: 'Pasoš: obrazac 8,00 EUR na 825-42-95 i administrativna taksa 25,00 EUR na 825-55-56, model 05.',
+      en: 'Passport: form 8.00 EUR to 825-42-95 and administrative fee 25.00 EUR to 825-55-56, model 05.',
+      ru: 'Паспорт: бланк 8,00 EUR на 825-42-95 и административный сбор 25,00 EUR на 825-55-56, модель 05.',
     },
     intro: {
       sr: 'Za pasoš se plaćaju dva naloga: obrazac i administrativna taksa. Oba na račune MUP-a, model 05.',
@@ -419,7 +428,7 @@ export const TEMPLATES: PaymentTemplate[] = [
       {
         id: 'obrazac',
         label: { sr: 'Obrazac', en: 'Form', ru: 'Бланк' },
-        preset: { account: '825-42-95', payee: 'Ministarstvo unutrašnjih poslova\nPrihodi od izdavanja isprava', purpose: 'Obrazac pasoša', amount: '15,00', model: '05' },
+        preset: { account: '825-42-95', payee: 'Ministarstvo unutrašnjih poslova\nPrihodi od izdavanja isprava', purpose: 'Obrazac pasoša', amount: '8,00', model: '05' },
         referenceHint: MUP_REFERENCE,
       },
       {
@@ -430,12 +439,16 @@ export const TEMPLATES: PaymentTemplate[] = [
       },
     ],
     fees: [
-      { label: { sr: 'Obrazac pasoša', en: 'Passport form', ru: 'Бланк паспорта' }, amount: 15 },
+      { label: { sr: 'Obrazac pasoša', en: 'Passport form', ru: 'Бланк паспорта' }, amount: 8 },
       { label: { sr: 'Administrativna taksa', en: 'Administrative fee', ru: 'Административный сбор' }, amount: 25 },
     ],
-    notes: [],
-    sources: [NAREDBA, MUP_DOCS],
-    checkedAt: '2026-09',
+    notes: [{
+      sr: 'Lica do 21 godine ne plaćaju administrativnu taksu od 25 EUR. Račun takse 825-55-56 je iz Naredbe; ako vam na šalteru kažu drugi, platite na njega.',
+      en: 'People under 21 do not pay the 25 EUR administrative fee. The fee account 825-55-56 comes from the Naredba; if the counter staff name a different one, pay to that.',
+      ru: 'Лица до 21 года не платят административный сбор 25 EUR. Счёт сбора 825-55-56 взят из Naredbe; если в окошке назовут другой, платите на него.',
+    }],
+    sources: [NAREDBA, MUP_PASSPORT],
+    checkedAt: '2026-10',
   },
 ]
 

@@ -52,6 +52,13 @@ describe('municipalities', () => {
     }
   })
 
+  it('uses the accounts of Naredba 23/26 for Podgorica, Zeta and Pljevlja', () => {
+    const find = (name: string) => MUNICIPALITIES.find(m => m.name === name)
+    expect(find('Podgorica')?.accounts.nepokretnosti).toBe('510-30280140-23')
+    expect(find('Zeta')?.accounts.boravisna).toBeDefined()
+    expect(find('Pljevlja')?.accounts.nepokretnosti).toBeUndefined()
+  })
+
   it('every account prefix is a known bank', () => {
     const codes = new Set(BANK_CODES.map(b => b.code))
     for (const m of MUNICIPALITIES) for (const a of Object.values(m.accounts)) expect(codes.has(a.slice(0, 3)), a).toBe(true)
