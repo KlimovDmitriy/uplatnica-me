@@ -103,7 +103,9 @@ export function isJmbValid(jmb: string): boolean {
   const d = [...jmb].map(Number)
   const sum = [7, 6, 5, 4, 3, 2].reduce((s, w, i) => s + w * (d[i]! + d[i + 6]!), 0)
   const control = 11 - (sum % 11)
-  return (control > 9 ? 0 : control) === d[12]
+  // Control 11 means check digit 0; control 10 means no valid number exists.
+  if (control === 10) return false
+  return (control === 11 ? 0 : control) === d[12]
 }
 
 /** PIB (8 digits): mod 11 with weights 8…2. */

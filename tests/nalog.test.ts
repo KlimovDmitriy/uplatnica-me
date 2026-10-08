@@ -62,6 +62,20 @@ describe('PIB and JMB', () => {
   })
 })
 
+describe('JMB control digit edge cases', () => {
+  const digits = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+
+  it('rejects every last digit when the computed control is 10', () => {
+    // 7 * 8 = 56 = 5 * 11 + 1, so control = 11 - 1 = 10.
+    for (const d of digits) expect(isJmbValid(`000000800000${d}`)).toBe(false)
+  })
+
+  it('accepts only 0 when the computed control is 11', () => {
+    // Sum 0, so control = 11 - 0 = 11.
+    for (const d of digits) expect(isJmbValid(`000000000000${d}`)).toBe(d === 0)
+  })
+})
+
 describe('validateNalog', () => {
   it('passes the official sample', () => {
     expect(validateNalog(input())).toEqual([])
