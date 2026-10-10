@@ -8,7 +8,8 @@ import type { ReferenceTool } from '~/data/templates'
 const props = defineProps<{ tool?: ReferenceTool }>()
 
 const { t } = useI18n()
-const { form, patch } = useSlip()
+const { form } = useSlip()
+const { write } = useSlipWriter()
 
 const id = ref('')
 const code = ref('')
@@ -22,11 +23,19 @@ const account = computed(() => (props.tool?.localAccount ? municipality.value?.a
 const noAccount = computed(() => !!props.tool?.localAccount && !!municipality.value && !account.value)
 const reference = computed(() => (idKind.value && suffix.value ? buildModel18(digits.value, suffix.value) : ''))
 
-watch(reference, (r) => { if (r) patch({ model: '18', reference: r }) })
-watch(municipality, (m) => {
-  if (!m || !props.tool?.localAccount) return
-  patch({ account: account.value ?? '', payee: [m.payee, props.tool.payeeLine].filter(Boolean).join('\n') })
+/** Everything this builder puts on the slip for the current input. */
+const output = computed(() => {
+  const m = municipality.value
+  return {
+    ...(reference.value ? { model: '18', reference: reference.value } : {}),
+    ...(m && props.tool?.localAccount
+      ? { account: account.value ?? '', payee: [m.payee, props.tool.payeeLine].filter(Boolean).join('\n') }
+      : {}),
+  }
 })
+// Fields that drop out of the output (municipality unset, ID cleared or cut short) are taken back,
+// unless the user has edited them since; fields the builder never wrote are left alone.
+watch(output, write)
 // A new template (other tool) starts from scratch.
 watch(() => props.tool, () => { code.value = '' })
 </script>

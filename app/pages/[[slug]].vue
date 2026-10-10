@@ -6,8 +6,9 @@
 import { findTemplate } from '~/data/templates'
 import { FAQ } from '~/data/faq'
 
-// A fresh page per template, so everything below is set up once for its slug.
-definePageMeta({ key: route => route.path })
+// A fresh page per URL, so everything below is set up once for its slug. The language prefix is not
+// part of the key: switching language keeps the page, and with it the slip being edited.
+definePageMeta({ key: route => splitLangPrefix(route.path).path })
 
 const route = useRoute()
 const { t, locale } = useI18n()
@@ -26,20 +27,23 @@ usePageSeo({
   breadcrumb: template && [{ name: () => l(template.name) }],
 })
 
-useSchemaOrg([
-  defineWebPage({ '@type': ['WebPage', 'FAQPage'] }),
-  defineSoftwareApp({
-    name: () => t('meta.appName'),
-    applicationCategory: 'FinanceApplication',
-    operatingSystem: 'Web',
-    inLanguage: () => locale.value,
-    offers: { price: 0, priceCurrency: 'EUR' },
-  }),
-  ...FAQ.map(k => defineQuestion({
-    name: () => t(`faq.${k}.q`),
-    acceptedAnswer: () => t(`faq.${k}.a`),
-  })),
-])
+// The app and its FAQ belong to the home page; template pages are plain pages with a breadcrumb.
+useSchemaOrg(template
+  ? [defineWebPage()]
+  : [
+      defineWebPage({ '@type': ['WebPage', 'FAQPage'] }),
+      defineSoftwareApp({
+        name: () => t('meta.appName'),
+        applicationCategory: 'FinanceApplication',
+        operatingSystem: 'Web',
+        inLanguage: () => locale.value,
+        offers: { price: 0, priceCurrency: 'EUR' },
+      }),
+      ...FAQ.map(k => defineQuestion({
+        name: () => t(`faq.${k}.q`),
+        acceptedAnswer: () => t(`faq.${k}.a`),
+      })),
+    ])
 </script>
 
 <template>
@@ -92,7 +96,10 @@ useSchemaOrg([
       <AccountCheck />
     </section>
 
-    <FaqSection class="no-print" />
+    <FaqSection
+      v-if="!template"
+      class="no-print"
+    />
   </div>
 </template>
 

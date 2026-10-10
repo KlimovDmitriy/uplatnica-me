@@ -4,16 +4,20 @@ import type { SlipForm } from '~/composables/useSlip'
 const props = defineProps<{
   /** Prefills the slip (template pages). Applied on the server too, so the prerendered HTML shows it. */
   preset?: Partial<SlipForm>
-  /** Restore/save the local draft and read shared links (home page only). */
+  /** Restore/save the local draft (home page only). Shared links are read on every page. */
   persist?: boolean
 }>()
 
 const { t } = useI18n()
-const { form, setForm, fromLink } = useSlip()
+const { form, setForm, fromLink, restore } = useSlip()
 
 if (props.preset) setForm(props.preset)
-watch(() => props.preset, p => p && setForm(p))
-if (props.persist) useSlip().persistDraft()
+// Another payment tab of the template: its preset replaces the slip, but what the user typed into
+// fields the new preset does not set (payer, amount, reference…) carries over.
+watch(() => props.preset, (preset, old) => {
+  if (preset) setForm({ ...changedFields(form.value, old), ...preset })
+})
+restore(!!props.persist)
 </script>
 
 <template>
