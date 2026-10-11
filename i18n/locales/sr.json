@@ -140,11 +140,20 @@
     "button": "Zahvali autoru",
     "title": "Zahvali autoru",
     "lead": "Sajt je besplatan i bez reklama. Ako vam je koristio, možete podržati dalji razvoj.",
-    "empty": "Načini podrške još nisu podešeni.",
-    "tabs": { "bank": "Bankom", "crypto": "Kripto", "links": "Servisi" },
-    "bankHint": "Uplata na račun autora iz bilo koje banke.",
+    "tabs": {
+      "sepa": "SEPA (EUR)",
+      "card": "Kartica",
+      "crypto": "Kripto"
+    },
+    "sepaHint": "SEPA prenos u eurima iz banke u Crnoj Gori ili EU. Skenirajte EPC QR kod u bankarskoj aplikaciji koja ga podržava ili kopirajte podatke.",
     "name": "Primalac",
-    "cryptoWarn": "Šaljite samo navedeni token na navedenoj mreži, inače se sredstva mogu izgubiti."
+    "bank": "Banka",
+    "network": "Mreža",
+    "accepted": "Prihvata se: {coins} na mreži {network}.",
+    "address": "adresa",
+    "addressQr": "QR adrese, {network}",
+    "cryptoWarn": "Šaljite samo navedeni token na navedenoj mreži, inače se sredstva mogu izgubiti.",
+    "cryptoEvm": "Jedna adresa važi za sve EVM mreže: u novčaniku izaberite tačno ovu mrežu pri slanju."
   },
   "footer": {
     "disclaimer": "Uplatnica CG nije povezana sa CBCG, Upravom prihoda i carina ni sa bankama. Prije plaćanja provjerite podatke primaoca."

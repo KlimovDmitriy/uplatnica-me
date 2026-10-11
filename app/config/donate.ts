@@ -1,43 +1,53 @@
 /**
- * "Support the author" settings. Empty values are hidden on the site,
- * so fill only what you actually use.
+ * "Support the author": static parts only (amounts, texts, network metadata).
+ * Personal details (accounts, IBAN, wallets, links) come from NUXT_PUBLIC_DONATE_* env vars at
+ * build time, see .env.example and app/composables/useDonate.ts.
  */
-export interface CryptoWallet {
-  id: string
-  coin: string
-  network: string
-  address: string
+export interface DonateLink {
+  id: 'kofi' | 'github-sponsors'
+  label: string
 }
 
-export interface DonateLink {
+export type CryptoFamilyId = 'tron' | 'ton' | 'solana' | 'evm'
+
+export interface CryptoNetwork {
   id: string
-  label: string
-  url: string
+  name: string
+  /** Stablecoins accepted on this network. */
+  coins: string[]
+}
+
+/** One address per family: every EVM network below shares the same one. */
+export interface CryptoFamily {
+  id: CryptoFamilyId
+  networks: CryptoNetwork[]
 }
 
 export const donateConfig = {
-  /** Bank transfer: shown as IBAN to copy. Montenegro has no payment QR standard yet. */
-  bank: {
-    iban: '', // e.g. 'ME25 5100 0000 0000 1234 56' or an EU / Serbian IBAN
-    name: '', // e.g. 'Ime Prezime'
-    bic: '',
-    purpose: 'Podrška autoru',
+  /** SEPA transfer in EUR to a foreign-currency IBAN (Montenegro has no payment QR standard yet). Plain ASCII: SEPA banks may reject č, ć, š. */
+  sepa: {
+    purpose: 'Podrska autoru',
   },
 
   // Buy Me a Coffee is left out on purpose: it does not pay out to Serbia or Montenegro.
   links: [
-    { id: 'kofi', label: 'Ko-fi', url: '' }, // needs PayPal or Stripe on the receiving side
-    { id: 'donatepay', label: 'DonatePay', url: '' },
-    { id: 'donationalerts', label: 'DonationAlerts', url: '' },
+    { id: 'kofi', label: 'Ko-fi' }, // needs PayPal or Stripe on the receiving side
+    { id: 'github-sponsors', label: 'GitHub Sponsors' },
   ] satisfies DonateLink[],
 
+  // Low-fee stablecoin networks only.
   crypto: [
-    { id: 'usdt-trc20', coin: 'USDT', network: 'TRC-20 (Tron)', address: '' },
-    { id: 'usdt-ton', coin: 'USDT', network: 'TON', address: '' },
-    { id: 'usdc-erc20', coin: 'USDC', network: 'ERC-20 (Ethereum)', address: '' },
-    { id: 'usdc-sol', coin: 'USDC', network: 'Solana', address: '' },
-    { id: 'ton', coin: 'TON', network: 'TON', address: '' },
-    { id: 'btc', coin: 'BTC', network: 'Bitcoin', address: '' },
-    { id: 'eth', coin: 'ETH', network: 'Ethereum', address: '' },
-  ] satisfies CryptoWallet[],
+    { id: 'tron', networks: [{ id: 'tron', name: 'Tron (TRC-20)', coins: ['USDT'] }] },
+    { id: 'ton', networks: [{ id: 'ton', name: 'TON', coins: ['USDT'] }] },
+    { id: 'solana', networks: [{ id: 'solana', name: 'Solana (SPL)', coins: ['USDT', 'USDC'] }] },
+    {
+      id: 'evm',
+      networks: [
+        { id: 'polygon', name: 'Polygon', coins: ['USDT', 'USDC'] },
+        { id: 'base', name: 'Base', coins: ['USDC'] },
+        { id: 'bsc', name: 'BNB Smart Chain (BEP-20)', coins: ['USDT', 'USDC'] },
+        { id: 'arbitrum', name: 'Arbitrum One', coins: ['USDT', 'USDC'] },
+      ],
+    },
+  ] satisfies CryptoFamily[],
 }

@@ -52,6 +52,20 @@ export default defineNuxtConfig({
       yandexVerification: '',
       plausibleDomain: '',
       plausibleSrc: 'https://plausible.io/js/script.js',
+      // "Support the author" details (NUXT_PUBLIC_DONATE_*). Empty methods are hidden, with none
+      // set the donate button disappears.
+      donate: {
+        sepaIban: '',
+        sepaBic: '',
+        sepaName: '',
+        sepaBank: '',
+        kofi: '',
+        githubSponsors: '',
+        cryptoTron: '',
+        cryptoTon: '',
+        cryptoSolana: '',
+        cryptoEvm: '',
+      },
     },
   },
 

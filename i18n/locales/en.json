@@ -140,11 +140,20 @@
     "button": "Thank the author",
     "title": "Thank the author",
     "lead": "The site is free and has no ads. If it helped you, you can support its development.",
-    "empty": "Ways to support are not set up yet.",
-    "tabs": { "bank": "Bank", "crypto": "Crypto", "links": "Services" },
-    "bankHint": "A transfer to the author's account from any bank.",
+    "tabs": {
+      "sepa": "SEPA (EUR)",
+      "card": "Card",
+      "crypto": "Crypto"
+    },
+    "sepaHint": "SEPA transfer in euros from a bank in Montenegro or the EU. Scan the EPC QR code with a banking app that supports it, or copy the details.",
     "name": "Payee",
-    "cryptoWarn": "Send only the listed token on the listed network, otherwise the funds may be lost."
+    "bank": "Bank",
+    "network": "Network",
+    "accepted": "Accepted: {coins} on {network}.",
+    "address": "address",
+    "addressQr": "Address QR, {network}",
+    "cryptoWarn": "Send only the listed token on the listed network, otherwise the funds may be lost.",
+    "cryptoEvm": "One address works for all EVM networks: select exactly this network in your wallet when sending."
   },
   "footer": {
     "disclaimer": "Uplatnica CG is not affiliated with the CBCG, the Revenue and Customs Administration or any bank. Check the payee details before paying."

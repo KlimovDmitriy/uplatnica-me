@@ -2,6 +2,7 @@
 /** Footer content (info links, disclaimer, donate): the desktop bar and the mobile dialog both render it. */
 defineEmits<{ donate: [] }>()
 const { t } = useI18n()
+const { enabled: donateEnabled } = useDonate()
 </script>
 
 <template>
@@ -21,6 +22,7 @@ const { t } = useI18n()
       {{ t('footer.disclaimer') }}
     </p>
     <button
+      v-if="donateEnabled"
       type="button"
       class="btn small donate"
       @click="$emit('donate')"

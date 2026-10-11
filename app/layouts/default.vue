@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
+const { enabled: donateEnabled } = useDonate()
 const donate = ref<{ open: () => void }>()
 const info = ref<{ open: () => void }>()
 </script>
@@ -60,7 +61,10 @@ const info = ref<{ open: () => void }>()
       @donate="donate?.open()"
     />
 
-    <DonateDialog ref="donate" />
+    <DonateDialog
+      v-if="donateEnabled"
+      ref="donate"
+    />
     <ClientOnly>
       <LangSuggest />
     </ClientOnly>
