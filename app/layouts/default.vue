@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const { t } = useI18n()
 const donate = ref<{ open: () => void }>()
+const info = ref<{ open: () => void }>()
 </script>
 
 <template>
-  <div>
+  <div class="shell">
     <a
       href="#main"
       class="skip-link no-print"
@@ -18,7 +19,26 @@ const donate = ref<{ open: () => void }>()
         >
           Uplatnica <small>CG</small>
         </LangLink>
-        <LangSwitcher />
+        <div class="actions">
+          <button
+            type="button"
+            class="info-btn narrow-only"
+            :aria-label="t('nav.info')"
+            @click="info?.open()"
+          >
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            ><path d="M12 20.5s-8-4.9-8-11A4.5 4.5 0 0 1 12 6.8a4.5 4.5 0 0 1 8 2.7c0 6.1-8 11-8 11z" /></svg>
+          </button>
+          <LangSwitcher />
+        </div>
       </div>
     </header>
 
@@ -31,26 +51,14 @@ const donate = ref<{ open: () => void }>()
 
     <footer class="footer no-print">
       <div class="container">
-        <p class="links">
-          <LangLink to="/#poziv-na-broj">
-            {{ t('reference.title') }}
-          </LangLink>
-          <LangLink to="/#provjera-racuna">
-            {{ t('account.title') }}
-          </LangLink>
-          <button
-            type="button"
-            class="link"
-            @click="donate?.open()"
-          >
-            {{ t('donate.button') }}
-          </button>
-        </p>
-        <p class="disclaimer">
-          {{ t('footer.disclaimer') }}
-        </p>
+        <SiteInfo @donate="donate?.open()" />
       </div>
     </footer>
+
+    <InfoDialog
+      ref="info"
+      @donate="donate?.open()"
+    />
 
     <DonateDialog ref="donate" />
     <ClientOnly>
@@ -66,9 +74,18 @@ const donate = ref<{ open: () => void }>()
 .brand:hover { color: var(--text); }
 .brand small { font-size: var(--fs-sm); font-weight: var(--fw-regular); color: var(--text-muted); }
 main:focus { outline: none; }
-.footer { margin-top: var(--s-8); border-top: 1px solid var(--border); padding: var(--s-5) 0 var(--s-6); font-size: var(--fs-sm); }
-.links { display: flex; flex-wrap: wrap; gap: var(--s-2) var(--s-4); margin: 0 0 var(--s-3); }
-.links > * { display: inline-flex; align-items: center; min-height: 24px; }
-.disclaimer { margin: 0; max-width: var(--measure); font-size: var(--fs-xs); color: var(--text-muted); }
+.actions { display: flex; align-items: center; gap: var(--s-2); }
+.info-btn {
+  display: grid; place-items: center; width: 44px; height: 44px; padding: 0;
+  border: 0; border-radius: var(--r-sm); background: none; color: var(--text-muted); cursor: pointer;
+}
+.info-btn:hover { background: var(--surface-2); color: var(--text); }
+.footer { margin-top: var(--s-8); border-top: 1px solid var(--border); padding: var(--s-5) 0 var(--s-6); }
 @media (max-width: 599.98px) { .footer { margin-top: var(--s-7); } }
+@media (min-width: 960px) {
+  .footer { position: fixed; inset: auto 0 0; z-index: 5; height: var(--footer-h); margin: 0; padding: 0; background: var(--surface); }
+  .footer .container { height: 100%; }
+  .shell { padding-bottom: var(--footer-h); }
+}
+@media print { .shell { padding-bottom: 0; } }
 </style>

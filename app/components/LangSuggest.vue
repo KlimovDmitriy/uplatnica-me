@@ -61,7 +61,7 @@ watch(locale, hide)
 
 <style scoped>
 .suggest {
-  position: fixed; left: var(--s-3); right: var(--s-3); bottom: var(--s-3); z-index: 20;
+  position: fixed; left: var(--s-3); right: var(--s-3); bottom: calc(var(--footer-h) + var(--s-3)); z-index: 20;
   display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-2) var(--s-3);
   max-width: 480px; margin-inline: auto; padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border); border-radius: var(--r-md);
