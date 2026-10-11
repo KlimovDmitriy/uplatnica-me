@@ -2,42 +2,40 @@
 import type { SlipForm } from '~/composables/useSlip'
 
 const { t } = useI18n()
-const { form, fieldError, errors } = useSlip()
+const { problems } = useSlipProblems()
+const errorId = slipErrorId
 
-const FIELDS: (keyof SlipForm)[] = [
-  'payer', 'purpose', 'payee', 'payerAccount', 'debitModel', 'debitReference',
-  'amount', 'paymentCode', 'account', 'model', 'reference',
-]
-
-// Required fields are reported once the slip has an amount or an account, not on an empty form.
-const started = computed(() => !!(form.value.amount.trim() || form.value.account.trim()))
-
-const problems = computed(() => FIELDS
-  .map((field) => {
-    const e = fieldError(field) ?? (started.value && !String(form.value[field]).trim()
-      ? errors.value.find(x => x === `${field}.required`)
-      : undefined)
-    return e && { field, label: t(`slip.${field === 'debitModel' ? 'model' : field}`), text: t(`errors.${e}`, LIMITS) }
-  })
-  .filter(Boolean) as { field: keyof SlipForm, label: string, text: string }[])
+/** Focuses the field in whichever is shown: the slip editor (e-*) or the stacked form (f-*). */
+function focusField(field: keyof SlipForm) {
+  const el = [`e-${field}`, `f-${field}`]
+    .map(id => document.getElementById(id))
+    .find(e => e && e.offsetParent !== null)
+  el?.focus()
+}
 </script>
 
 <template>
-  <ul
-    v-if="problems.length"
-    class="errors"
-    role="alert"
-  >
-    <li
-      v-for="p in problems"
-      :key="p.field"
+  <div aria-live="polite">
+    <div
+      v-if="problems.length"
+      class="error-summary"
     >
-      <b>{{ p.label }}:</b> {{ p.text }}
-    </li>
-  </ul>
+      <p class="title">
+        {{ t('errors.summary') }}
+      </p>
+      <ul>
+        <li
+          v-for="p in problems"
+          :key="p.field"
+        >
+          <button
+            type="button"
+            class="link"
+            @click="focusField(p.field)"
+          >
+            {{ p.label }}</button>: <span :id="errorId(p.field)">{{ p.text }}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
-
-<style scoped>
-.errors { margin: 0; padding: 8px 12px 8px 28px; border: 1px solid #000; font-size: 13px; }
-.errors li + li { margin-top: 2px; }
-</style>

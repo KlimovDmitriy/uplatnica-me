@@ -1,5 +1,6 @@
 <script setup lang="ts">
 /** The current slip drawn by renderSlipSvg: scales on screen, prints at 210 × 99 mm. */
+const { t } = useI18n()
 const { form } = useSlip()
 const svg = computed(() => renderSlipSvg(form.value))
 </script>
@@ -8,13 +9,14 @@ const svg = computed(() => renderSlipSvg(form.value))
   <div
     class="slip"
     role="img"
-    aria-label="Nalog platioca"
+    :aria-label="t('slip.title')"
     v-html="svg"
   />
 </template>
 
 <style scoped>
-.slip { line-height: 0; border: 1px solid var(--border); }
+.slip { line-height: 0; }
+@media screen { .slip { background: #fff; box-shadow: var(--shadow-paper); } }
 .slip :deep(svg) { width: 100%; height: auto; display: block; }
 
 @media print {

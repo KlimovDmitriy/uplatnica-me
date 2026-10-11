@@ -2,7 +2,11 @@
 /** Ready-made orders grouped by category. Plain links, so every template is a crawlable URL. */
 import { TEMPLATES, type TemplateCategory } from '~/data/templates'
 
-defineProps<{ current?: string }>()
+defineProps<{
+  current?: string
+  /** Below a template's own order: "Other ready-made orders". */
+  more?: boolean
+}>()
 const { t } = useI18n()
 const l = useLocalized()
 
@@ -14,39 +18,50 @@ const groups = ORDER
 
 <template>
   <nav
-    class="picker"
-    :aria-label="t('templates.title')"
+    class="picker card"
+    :aria-labelledby="more ? 'picker-more' : 'picker-title'"
   >
-    <p
+    <h2 :id="more ? 'picker-more' : 'picker-title'">
+      {{ t(more ? 'templates.more' : 'templates.title') }}
+    </h2>
+    <div
       v-for="g in groups"
       :key="g.category"
+      class="group"
     >
-      <b>{{ t(`templates.categories.${g.category}`) }}:</b>&nbsp;
-      <template
-        v-for="(tpl, i) in g.items"
-        :key="tpl.slug"
-      >
-        <template v-if="i">
-          ·
-        </template>
-        <b v-if="tpl.slug === current">{{ l(tpl.name) }}</b>
-        <LangLink
-          v-else
-          :to="`/${tpl.slug}`"
+      <h3 class="label">
+        {{ t(`templates.categories.${g.category}`) }}
+      </h3>
+      <ul class="chips">
+        <li
+          v-for="tpl in g.items"
+          :key="tpl.slug"
         >
-          {{ l(tpl.name) }}
-        </LangLink>
-      </template>
-    </p>
-    <p v-if="current">
-      <LangLink to="/">
-        ← {{ t('templates.blank') }}
-      </LangLink>
-    </p>
+          <span
+            v-if="tpl.slug === current"
+            class="chip"
+            aria-current="page"
+          >{{ l(tpl.name) }}</span>
+          <LangLink
+            v-else
+            :to="`/${tpl.slug}`"
+            class="chip"
+          >
+            {{ l(tpl.name) }}
+          </LangLink>
+        </li>
+      </ul>
+    </div>
   </nav>
 </template>
 
 <style scoped>
-.picker { font-size: 13px; line-height: 1.7; }
-.picker p { margin: 0; }
+.group { display: grid; gap: var(--s-2); padding: var(--s-3) 0; border-top: 1px solid var(--border); }
+.group:first-of-type { border-top: 0; padding-top: 0; }
+.group:last-child { padding-bottom: 0; }
+.label { margin: 0; font-size: var(--fs-sm); font-weight: var(--fw-semibold); line-height: var(--lh-snug); color: var(--text-muted); }
+.chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s-2); }
+@media (min-width: 960px) {
+  .group { grid-template-columns: 13rem 1fr; gap: var(--s-3) var(--s-5); align-items: baseline; }
+}
 </style>

@@ -5,7 +5,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="faq">
+  <section class="prose">
     <h2>{{ t('faq.title') }}</h2>
     <template
       v-for="k in FAQ"

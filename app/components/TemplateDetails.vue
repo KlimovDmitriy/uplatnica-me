@@ -1,5 +1,5 @@
 <script setup lang="ts">
-/** Template intro, fees, payment tabs and how to fill the references; the chosen payment is v-model. */
+/** Template intro, fees, payment choice and how to fill the references; the chosen payment is v-model. */
 import type { PaymentTemplate } from '~/data/templates'
 
 const props = defineProps<{ template: PaymentTemplate }>()
@@ -18,41 +18,50 @@ const eur = (n: number) => `${formatAmount(n)} EUR`
       {{ l(template.intro) }}
     </p>
 
-    <table
-      v-if="template.fees?.length"
-      class="fees"
-    >
-      <tbody>
-        <tr
-          v-for="(f, i) in template.fees"
-          :key="i"
-        >
-          <td>{{ l(f.label) }}</td>
-          <td class="mono">
-            {{ eur(f.amount) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-
     <div
-      v-if="template.payments.length > 1"
-      class="payments"
-      role="tablist"
+      v-if="template.fees?.length"
+      class="table-scroll"
     >
-      <button
-        v-for="(p, i) in template.payments"
-        :key="p.id"
-        type="button"
-        role="tab"
-        :aria-selected="active === p.id"
-        @click="active = p.id"
-      >
-        {{ i + 1 }}. {{ l(p.label) }}
-      </button>
+      <table class="table fees">
+        <tbody>
+          <tr
+            v-for="(f, i) in template.fees"
+            :key="i"
+          >
+            <td>{{ l(f.label) }}</td>
+            <td class="num">
+              {{ eur(f.amount) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
 
-    <template v-if="payment">
+    <fieldset
+      v-if="template.payments.length > 1"
+      class="choice pills"
+    >
+      <legend>{{ t('form.payment') }}</legend>
+      <label
+        v-for="(p, i) in template.payments"
+        :key="p.id"
+        class="chip"
+      >
+        <input
+          v-model="active"
+          type="radio"
+          class="sr-only"
+          name="template-payment"
+          :value="p.id"
+        >
+        {{ i + 1 }}. {{ l(p.label) }}
+      </label>
+    </fieldset>
+
+    <div
+      v-if="payment && (payment.referenceHint || payment.tool)"
+      class="note neutral"
+    >
       <p
         v-if="payment.referenceHint"
         class="hint"
@@ -63,21 +72,13 @@ const eur = (n: number) => `${formatAmount(n)} EUR`
         v-if="payment.tool"
         :tool="payment.tool"
       />
-    </template>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.details { display: grid; gap: 12px; }
+.details { display: grid; gap: var(--s-4); }
 .details > * { margin: 0; }
-.fees { border-collapse: collapse; max-width: 480px; font-size: 14px; }
-.fees td { padding: 4px 16px 4px 0; border-bottom: 1px solid #e5e5e5; }
-.fees td.mono { text-align: right; white-space: nowrap; }
-.payments { display: flex; flex-wrap: wrap; gap: 4px 20px; border-bottom: 1px solid #ccc; }
-.payments button {
-  border: 0; background: none; font: inherit; font-size: 14px; color: #777; cursor: pointer;
-  padding: 0 0 6px; margin-bottom: -1px; border-bottom: 2px solid transparent;
-}
-.payments button[aria-selected="true"] { color: #000; border-bottom-color: #000; }
-.hint { font-size: 14px; }
+.fees { max-width: 640px; }
+.hint { margin: 0; font-size: var(--fs-sm); }
 </style>

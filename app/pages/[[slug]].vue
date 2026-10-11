@@ -49,15 +49,28 @@ useSchemaOrg(template
 <template>
   <div class="container page">
     <header class="no-print intro">
-      <h1>{{ template ? l(template.title) : t('hero.title') }}</h1>
-      <p v-if="!template">
-        {{ t('hero.lead') }}
+      <p
+        v-if="template"
+        class="back"
+      >
+        <LangLink to="/">
+          ← {{ t('templates.blank') }}
+        </LangLink>
       </p>
+      <h1>{{ template ? l(template.title) : t('hero.title') }}</h1>
+      <template v-if="!template">
+        <p class="lead">
+          {{ t('hero.lead') }}
+        </p>
+        <p class="blank">
+          <a href="#generator">{{ t('hero.blankLink') }}</a>
+        </p>
+      </template>
     </header>
 
     <TemplatePicker
+      v-if="!template"
       class="no-print"
-      :current="template?.slug"
     />
 
     <TemplateDetails
@@ -68,6 +81,7 @@ useSchemaOrg(template
     />
 
     <SlipGenerator
+      id="generator"
       :preset="payment?.preset"
       :persist="!template"
     />
@@ -78,19 +92,35 @@ useSchemaOrg(template
       :template="template"
     />
 
-    <section class="no-print tools">
-      <template v-if="!template">
-        <h2 id="poziv-na-broj">
-          {{ t('reference.title') }}
-        </h2>
-        <p class="muted">
-          {{ t('reference.lead') }}
-        </p>
-        <ReferenceBuilder />
-        <MunicipalityCodes />
-      </template>
+    <TemplatePicker
+      v-if="template"
+      class="no-print"
+      :current="template.slug"
+      more
+    />
 
-      <h2 id="provjera-racuna">
+    <section
+      v-if="!template"
+      id="poziv-na-broj"
+      class="card no-print tool"
+      aria-labelledby="reference-title"
+    >
+      <h2 id="reference-title">
+        {{ t('reference.title') }}
+      </h2>
+      <p class="lead">
+        {{ t('reference.lead') }}
+      </p>
+      <ReferenceBuilder />
+      <MunicipalityCodes />
+    </section>
+
+    <section
+      id="provjera-racuna"
+      class="card no-print tool"
+      aria-labelledby="account-title"
+    >
+      <h2 id="account-title">
         {{ t('account.title') }}
       </h2>
       <AccountCheck />
@@ -104,11 +134,12 @@ useSchemaOrg(template
 </template>
 
 <style scoped>
-.page { display: grid; gap: 16px; }
-.intro { padding-top: 16px; }
-.intro h1 { margin-bottom: 4px; }
-.intro p { color: #444; margin: 0; }
-.tools { display: grid; gap: 10px; margin-top: 12px; }
-.tools h2 { margin: 16px 0 0; font-size: 17px; }
-.muted { color: #555; margin: 0; font-size: 14px; }
+.intro > :last-child { margin-bottom: 0; }
+.intro .lead { margin: 0; }
+.back { margin: 0 0 var(--s-2); font-size: var(--fs-sm); }
+.blank { margin: var(--s-3) 0 0; }
+.back a, .blank a { display: inline-flex; align-items: center; min-height: 24px; }
+.tool { display: grid; gap: var(--s-3); }
+.tool > * { margin: 0; min-width: 0; }
+.tool .lead { font-size: var(--fs-md); }
 </style>

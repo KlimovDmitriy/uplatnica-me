@@ -12,7 +12,7 @@ const { t } = useI18n()
 const { form, setForm, fromLink, restore } = useSlip()
 
 if (props.preset) setForm(props.preset)
-// Another payment tab of the template: its preset replaces the slip, but what the user typed into
+// Another payment choice of the template: its preset replaces the slip, but what the user typed into
 // fields the new preset does not set (payer, amount, reference…) carries over.
 watch(() => props.preset, (preset, old) => {
   if (preset) setForm({ ...changedFields(form.value, old), ...preset })
@@ -21,16 +21,30 @@ restore(!!props.persist)
 </script>
 
 <template>
-  <section class="generator">
-    <p class="options no-print">
-      <label
-        v-for="k in (['uplata', 'prenos'] as const)"
-        :key="k"
-      ><input
-        v-model="form.kind"
-        type="radio"
-        :value="k"
-      > {{ t(`kinds.${k}.title`) }} <small>{{ t(`kinds.${k}.hint`) }}</small></label>
+  <section
+    class="panel generator"
+    :aria-label="t('nav.generator')"
+  >
+    <div class="head no-print">
+      <fieldset class="choice segmented kind">
+        <legend class="sr-only">
+          {{ t('form.kind') }}
+        </legend>
+        <label
+          v-for="k in (['uplata', 'prenos'] as const)"
+          :key="k"
+        ><input
+          v-model="form.kind"
+          type="radio"
+          class="sr-only"
+          name="slip-kind"
+          :value="k"
+        ><span>{{ t(`kinds.${k}.title`) }}</span><small>{{ t(`kinds.${k}.hint`) }}</small></label>
+      </fieldset>
+    </div>
+
+    <p class="hint wide-only no-print">
+      {{ t('form.editorHint') }}
     </p>
 
     <p
@@ -43,6 +57,9 @@ restore(!!props.persist)
 
     <SlipEditor class="wide-only no-print" />
     <SlipForm class="narrow-only no-print" />
+    <h3 class="preview-title narrow-only no-print">
+      {{ t('form.preview') }}
+    </h3>
     <SlipPreview class="print-area narrow-only" />
 
     <SlipErrors class="no-print" />
@@ -52,10 +69,14 @@ restore(!!props.persist)
 </template>
 
 <style scoped>
-.generator { display: grid; gap: 12px; }
-.options { margin: 0; display: flex; flex-wrap: wrap; gap: 6px 24px; }
-.options label { display: inline-flex; gap: 5px; align-items: center; cursor: pointer; }
-.options small { color: #777; }
-.options input { margin: 0; }
-.note { margin: 0; padding: 6px 10px; border: 1px solid #000; }
+.generator { display: grid; gap: var(--s-4); }
+.generator > * { margin: 0; min-width: 0; }
+.kind { width: max-content; min-width: 360px; }
+.hint { font-size: var(--fs-sm); color: var(--text-muted); margin-top: calc(-1 * var(--s-2)) !important; }
+.preview-title { font-size: var(--fs-sm); font-weight: var(--fw-semibold); color: var(--text-muted); margin-bottom: calc(-1 * var(--s-2)) !important; }
+@media (max-width: 1199.98px) { .generator { padding: var(--s-4); } }
+@media (max-width: 599.98px) {
+  .generator { margin-inline: calc(-1 * var(--gutter)); border-inline: 0; border-radius: 0; padding: var(--s-4); }
+  .kind { width: 100%; min-width: 0; }
+}
 </style>

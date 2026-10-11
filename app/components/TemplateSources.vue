@@ -9,7 +9,7 @@ const [year, month] = props.template.checkedAt.split('-')
 </script>
 
 <template>
-  <div class="sources">
+  <article class="prose">
     <template v-if="template.notes.length">
       <h2>{{ t('templates.notes') }}</h2>
       <ul>
@@ -37,11 +37,9 @@ const [year, month] = props.template.checkedAt.split('-')
     <p class="checked">
       {{ t('templates.checked', { date: `${month}/${year}` }) }}
     </p>
-  </div>
+  </article>
 </template>
 
 <style scoped>
-h2 { font-size: 15px; margin: 16px 0 4px; }
-ul { margin: 0; padding-left: 20px; font-size: 14px; }
-.checked { font-size: 13px; color: #777; }
+.checked { font-size: var(--fs-xs); color: var(--text-muted); }
 </style>

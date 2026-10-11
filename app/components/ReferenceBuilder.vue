@@ -13,10 +13,12 @@ const { write } = useSlipWriter()
 
 const id = ref('')
 const code = ref('')
+const uid = useId()
 
 const digits = computed(() => id.value.replace(/\D/g, ''))
 const idKind = computed(() => (digits.value.length === 13 ? 'jmb' : digits.value.length === 8 ? 'pib' : null))
 const idValid = computed(() => (idKind.value === 'jmb' ? isJmbValid(digits.value) : idKind.value === 'pib' ? isPibValid(digits.value) : false))
+const idInvalid = computed(() => !!idKind.value && !idValid.value)
 const suffix = computed(() => props.tool?.code ?? code.value)
 const municipality = computed(() => findMunicipality(code.value))
 const account = computed(() => (props.tool?.localAccount ? municipality.value?.accounts[props.tool.localAccount] : undefined))
@@ -42,48 +44,68 @@ watch(() => props.tool, () => { code.value = '' })
 
 <template>
   <div class="builder">
-    <label>
-      {{ t('reference.id') }}
+    <div class="field">
+      <label :for="`${uid}-id`">{{ t('reference.id') }}</label>
       <input
+        :id="`${uid}-id`"
         v-model="id"
+        class="mono"
         inputmode="numeric"
         maxlength="15"
         placeholder="0205973210263"
         autocomplete="off"
-        :class="{ invalid: idKind && !idValid }"
+        :aria-invalid="idInvalid ? 'true' : undefined"
+        :aria-describedby="`${uid}-id-msg`"
       >
-      <small v-if="idKind && !idValid">{{ t(`reference.${idKind}Invalid`) }}</small>
-      <small v-else>{{ t('reference.idHint') }}</small>
-    </label>
-    <label v-if="!tool?.code">
-      {{ t('reference.municipality') }}
-      <select v-model="code">
-        <option value="">{{ t('reference.choose') }}</option>
+      <small
+        :id="`${uid}-id-msg`"
+        :class="idInvalid ? 'error-text' : 'hint'"
+      >{{ idInvalid ? `✕ ${t(`reference.${idKind}Invalid`)}` : t('reference.idHint') }}</small>
+    </div>
+    <div
+      v-if="!tool?.code"
+      class="field"
+    >
+      <label :for="`${uid}-municipality`">{{ t('reference.municipality') }}</label>
+      <select
+        :id="`${uid}-municipality`"
+        v-model="code"
+        :aria-describedby="noAccount ? `${uid}-municipality-msg` : undefined"
+      >
+        <option value="">
+          {{ t('reference.choose') }}
+        </option>
         <option
           v-for="m in MUNICIPALITIES"
           :key="m.code"
           :value="m.code"
-        >{{ m.name }} ({{ m.code }})</option>
+        >
+          {{ m.name }} ({{ m.code }})
+        </option>
       </select>
-      <small v-if="noAccount">{{ t('reference.noAccount') }}</small>
-    </label>
-    <p
-      v-if="reference"
+      <small
+        v-if="noAccount"
+        :id="`${uid}-municipality-msg`"
+        class="hint"
+      >{{ t('reference.noAccount') }}</small>
+    </div>
+    <div
       class="result"
+      aria-live="polite"
     >
-      {{ t('slip.reference') }}: <b class="mono">18 {{ reference }}</b>
-      <template v-if="account">
-        · {{ t('slip.account') }}: <b class="mono">{{ form.account }}</b>
-      </template>
-    </p>
+      <p v-if="reference">
+        {{ t('slip.reference') }}: <b class="mono">18 {{ reference }}</b>
+        <template v-if="account">
+          · {{ t('slip.account') }}: <b class="mono">{{ form.account }}</b>
+        </template>
+      </p>
+    </div>
   </div>
 </template>
 
 <style scoped>
-.builder { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; }
-label { display: grid; gap: 3px; font-size: 13px; align-content: start; }
-small { color: #777; }
-.invalid { outline: 1px solid #000; }
-.result { grid-column: 1 / -1; margin: 0; font-size: 14px; }
-@media (max-width: 640px) { .builder { grid-template-columns: 1fr; } }
+.builder { display: grid; grid-template-columns: 1fr; gap: var(--s-3) var(--s-4); }
+.result { grid-column: 1 / -1; }
+.result p { margin: 0; overflow-wrap: anywhere; }
+@media (min-width: 960px) { .builder { grid-template-columns: 1fr 1fr; } }
 </style>

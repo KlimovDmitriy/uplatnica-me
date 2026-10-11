@@ -3,9 +3,13 @@
 import type { SlipForm } from '~/composables/useSlip'
 
 const { t } = useI18n()
-const { form, fieldError } = useSlip()
+const { form } = useSlip()
+const { problemFor } = useSlipProblems()
 
-const invalid = (f: keyof SlipForm) => !!fieldError(f)
+const label = (f: keyof SlipForm) => t(slipFieldLabel(f))
+/** aria-invalid / aria-describedby: present only on fields listed in the error summary. */
+const invalid = (f: keyof SlipForm) => (problemFor(f) ? 'true' : undefined)
+const describedBy = (f: keyof SlipForm) => (problemFor(f) ? slipErrorId(f) : undefined)
 </script>
 
 <template>
@@ -14,87 +18,134 @@ const invalid = (f: keyof SlipForm) => !!fieldError(f)
     novalidate
     @submit.prevent
   >
-    <label>{{ t('slip.payer') }}
+    <label class="field">{{ label('payer') }}
       <textarea
+        id="f-payer"
         v-model="form.payer"
         rows="3"
         :placeholder="t('form.payerPlaceholder')"
-        :class="{ invalid: invalid('payer') }"
+        enterkeyhint="next"
+        :aria-invalid="invalid('payer')"
+        :aria-describedby="describedBy('payer')"
       /></label>
-    <label>{{ t('slip.purpose') }}
+    <label class="field">{{ label('purpose') }}
       <textarea
+        id="f-purpose"
         v-model="form.purpose"
         rows="2"
-        :class="{ invalid: invalid('purpose') }"
+        enterkeyhint="next"
+        :aria-invalid="invalid('purpose')"
+        :aria-describedby="describedBy('purpose')"
       /></label>
-    <label>{{ t('slip.payee') }}
+    <label class="field">{{ label('payee') }}
       <textarea
+        id="f-payee"
         v-model="form.payee"
         rows="3"
         :placeholder="t('form.payeePlaceholder')"
-        :class="{ invalid: invalid('payee') }"
+        enterkeyhint="next"
+        :aria-invalid="invalid('payee')"
+        :aria-describedby="describedBy('payee')"
       /></label>
-    <label v-if="form.kind === 'prenos'">{{ t('slip.payerAccount') }}
+    <label
+      v-if="form.kind === 'prenos'"
+      class="field"
+    >{{ label('payerAccount') }}
       <input
+        id="f-payerAccount"
         v-model="form.payerAccount"
+        class="mono"
         inputmode="numeric"
-        :class="{ invalid: invalid('payerAccount') }"
+        enterkeyhint="next"
+        :aria-invalid="invalid('payerAccount')"
+        :aria-describedby="describedBy('payerAccount')"
       ></label>
     <div class="row">
-      <label class="code">{{ t('slip.model') }}
+      <label class="field code">{{ label('debitModel') }}
         <input
+          id="f-debitModel"
           v-model="form.debitModel"
+          class="mono"
           inputmode="numeric"
           maxlength="2"
-          :class="{ invalid: invalid('debitModel') }"
+          enterkeyhint="next"
+          :aria-invalid="invalid('debitModel')"
+          :aria-describedby="describedBy('debitModel')"
         ></label>
-      <label class="grow">{{ t('slip.debitReference') }}
+      <label class="field grow">{{ label('debitReference') }}
         <input
+          id="f-debitReference"
           v-model="form.debitReference"
-          :class="{ invalid: invalid('debitReference') }"
+          class="mono"
+          inputmode="text"
+          enterkeyhint="next"
+          :aria-invalid="invalid('debitReference')"
+          :aria-describedby="describedBy('debitReference')"
         ></label>
     </div>
     <div class="row">
-      <label class="grow">{{ t('slip.amount') }}, EUR
+      <label class="field grow">{{ label('amount') }}, EUR
         <input
+          id="f-amount"
           v-model="form.amount"
           inputmode="decimal"
           placeholder="0,00"
-          :class="{ invalid: invalid('amount') }"
+          enterkeyhint="next"
+          :aria-invalid="invalid('amount')"
+          :aria-describedby="describedBy('amount')"
         ></label>
-      <label class="code">{{ t('slip.paymentCode') }}
+      <label class="field code">{{ label('paymentCode') }}
         <input
+          id="f-paymentCode"
           v-model="form.paymentCode"
+          class="mono"
           inputmode="numeric"
           maxlength="3"
-          :class="{ invalid: invalid('paymentCode') }"
+          enterkeyhint="next"
+          :aria-invalid="invalid('paymentCode')"
+          :aria-describedby="describedBy('paymentCode')"
         ></label>
     </div>
-    <label>{{ t('slip.account') }}
+    <label class="field">{{ label('account') }}
       <input
+        id="f-account"
         v-model="form.account"
+        class="mono"
         inputmode="numeric"
         placeholder="000-0000000000-00"
-        :class="{ invalid: invalid('account') }"
+        enterkeyhint="next"
+        :aria-invalid="invalid('account')"
+        :aria-describedby="describedBy('account')"
       ></label>
     <div class="row">
-      <label class="code">{{ t('slip.model') }}
+      <label class="field code">{{ label('model') }}
         <input
+          id="f-model"
           v-model="form.model"
+          class="mono"
           inputmode="numeric"
           maxlength="2"
-          :class="{ invalid: invalid('model') }"
+          enterkeyhint="next"
+          :aria-invalid="invalid('model')"
+          :aria-describedby="describedBy('model')"
         ></label>
-      <label class="grow">{{ t('slip.reference') }}
+      <label class="field grow">{{ label('reference') }}
         <input
+          id="f-reference"
           v-model="form.reference"
-          :class="{ invalid: invalid('reference') }"
+          class="mono"
+          inputmode="text"
+          enterkeyhint="next"
+          :aria-invalid="invalid('reference')"
+          :aria-describedby="describedBy('reference')"
         ></label>
     </div>
-    <label>{{ t('slip.place') }}
+    <label class="field">{{ label('place') }}
       <input
+        id="f-place"
         v-model="form.place"
         placeholder="Podgorica, 01.10.2026."
+        enterkeyhint="done"
       ></label>
     <label
       v-if="form.kind === 'prenos'"
@@ -107,11 +158,8 @@ const invalid = (f: keyof SlipForm) => !!fieldError(f)
 </template>
 
 <style scoped>
-.slip-form { display: grid; gap: 10px; }
-label { display: grid; gap: 3px; font-size: 13px; }
-.row { display: flex; gap: 10px; }
-.code { width: 80px; flex: none; }
+.slip-form { display: grid; gap: var(--s-4); max-width: 600px; }
+.row { display: flex; gap: var(--s-3); align-items: end; }
+.code { width: 88px; flex: none; }
 .grow { flex: 1; min-width: 0; }
-.check { display: flex; gap: 6px; align-items: center; }
-.invalid { border-color: #000; outline: 1px solid #000; }
 </style>

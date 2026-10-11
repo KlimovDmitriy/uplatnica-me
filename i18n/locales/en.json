@@ -6,7 +6,8 @@
   },
   "hero": {
     "title": "Payment order for Montenegro",
-    "lead": "Type straight into the form, then print it or download a PDF. For taxes, fees and fines pick a ready-made order below."
+    "lead": "Type straight into the form, then print it or download a PDF. For taxes, fees and fines pick a ready-made order below.",
+    "blankLink": "Fill in a blank order ↓"
   },
   "kinds": {
     "uplata": { "title": "Uplata", "hint": "cash at the counter" },
@@ -14,7 +15,11 @@
   },
   "form": {
     "payerPlaceholder": "Marko Marković\nBeogradska 15\nPodgorica",
-    "payeePlaceholder": "Payee name\nStreet and number, town"
+    "payeePlaceholder": "Payee name\nStreet and number, town",
+    "editorHint": "Click a field on the order and type",
+    "preview": "Preview",
+    "kind": "Order type",
+    "payment": "What are you paying"
   },
   "slip": {
     "payer": "Payer",
@@ -29,9 +34,14 @@
     "reference": "Credit reference",
     "place": "Place and date",
     "urgent": "Hitnost (urgent)",
-    "urgentHint": "instant transfer, up to 3,000 EUR"
+    "urgentHint": "instant transfer, up to 3,000 EUR",
+    "modelDebit": "Model (debit)",
+    "modelCredit": "Model (credit)",
+    "kindOnSlip": "Order type (box on the form)",
+    "title": "Payment order"
   },
   "errors": {
+    "summary": "Check these fields",
     "payer": { "required": "Enter the payer's name and address", "tooLong": "At most {lines} lines of {lineLength} characters" },
     "purpose": { "required": "Enter the purpose", "tooLong": "At most {lines} lines of {lineLength} characters" },
     "payee": { "required": "Enter the payee", "tooLong": "At most {lines} lines of {lineLength} characters" },
@@ -72,7 +82,8 @@
     "delete": "remove",
     "download": "Download PDF ({n})",
     "building": "Building PDF…",
-    "clear": "Empty the batch"
+    "clear": "Empty the batch",
+    "item": "order {n}"
   },
   "flash": {
     "linked": "Link copied",
@@ -82,6 +93,7 @@
     "title": "Ready-made orders",
     "categories": { "taxes": "Taxes", "local": "Municipalities", "fines": "Fines", "documents": "Documents" },
     "blank": "blank order",
+    "more": "Other ready-made orders",
     "metaTitle": "{title} — Uplatnica CG",
     "notes": "Notes",
     "sources": "Sources",
@@ -138,6 +150,8 @@
     "disclaimer": "Uplatnica CG is not affiliated with the CBCG, the Revenue and Customs Administration or any bank. Check the payee details before paying."
   },
   "nav": {
-    "generator": "Payment order"
+    "generator": "Payment order",
+    "skip": "Skip to content",
+    "languages": "Language"
   }
 }
