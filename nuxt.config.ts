@@ -27,6 +27,22 @@ export default defineNuxtConfig({
       }
       pages.push(...copies)
     },
+    // jsPDF is big and needed only when the visitor downloads a PDF (imported on demand),
+    // so don't let the browser preload or prefetch its chunk. It still loads on demand.
+    'build:manifest'(manifest) {
+      for (const [key, entry] of Object.entries(manifest)) {
+        if (/jspdf/.test(key) || /jspdf/.test(entry.file ?? '')) {
+          entry.prefetch = false
+          entry.preload = false
+        }
+      }
+    },
+  },
+
+  // Language alternates are written into every page's <head> by usePageSeo (the sitemap module's
+  // i18n integration doesn't know our prefix routing).
+  sitemap: {
+    autoI18n: false,
   },
 
   // Baked in at `nuxt generate` from NUXT_PUBLIC_* env vars (see .env.example).

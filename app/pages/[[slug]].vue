@@ -22,7 +22,14 @@ const active = ref(template?.payments[0]?.id ?? '')
 const payment = computed(() => template?.payments.find(p => p.id === active.value))
 
 usePageSeo({
-  title: () => (template ? t('templates.metaTitle', { title: l(template.title) }) : t('meta.title')),
+  // The "| Uplatnica CG" suffix only while the title stays within ~60 characters, which is what
+  // search results show.
+  title: () => {
+    if (!template) return t('meta.title')
+    const plain = l(template.title)
+    const full = t('templates.metaTitle', { title: plain })
+    return full.length <= 60 ? full : plain
+  },
   description: () => (template ? l(template.metaDescription) : t('meta.description')),
   breadcrumb: template && [{ name: () => l(template.name) }],
 })

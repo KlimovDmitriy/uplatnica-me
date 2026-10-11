@@ -1,8 +1,8 @@
 {
   "meta": {
     "appName": "Uplatnica CG",
-    "title": "Montenegro payment order (nalog za plaćanje) — free generator",
-    "description": "Fill in and print a Montenegrin payment order to the CBCG rules: taxes, contributions, fees and fines with the right accounts and references. Free, no sign-up."
+    "title": "Montenegro payment order (nalog za plaćanje): generator",
+    "description": "Fill in and print a Montenegrin payment order to the CBCG rules: taxes, contributions, fees and fines with the right accounts and references. Free."
   },
   "hero": {
     "title": "Payment order for Montenegro",
@@ -94,7 +94,7 @@
     "categories": { "taxes": "Taxes", "local": "Municipalities", "fines": "Fines", "documents": "Documents" },
     "blank": "blank order",
     "more": "Other ready-made orders",
-    "metaTitle": "{title} — Uplatnica CG",
+    "metaTitle": "{title} | Uplatnica CG",
     "notes": "Notes",
     "sources": "Sources",
     "checked": "Data checked {date}. Compare it with your decision or bill before paying."

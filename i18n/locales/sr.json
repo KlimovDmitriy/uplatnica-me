@@ -1,8 +1,8 @@
 {
   "meta": {
     "appName": "Uplatnica CG",
-    "title": "Nalog za plaćanje (uplatnica) za Crnu Goru — besplatni generator",
-    "description": "Popunite i odštampajte nalog za plaćanje po propisima CBCG: porezi, doprinosi, takse i kazne sa tačnim računima i pozivom na broj. Besplatno, bez registracije."
+    "title": "Nalog za plaćanje (uplatnica) za Crnu Goru: generator",
+    "description": "Popunite i odštampajte nalog za plaćanje po pravilima CBCG: porezi, doprinosi, takse i kazne sa tačnim računima i pozivom na broj. Besplatno."
   },
   "hero": {
     "title": "Nalog za plaćanje za Crnu Goru",
@@ -94,7 +94,7 @@
     "categories": { "taxes": "Porezi", "local": "Opštine", "fines": "Kazne", "documents": "Dokumenta" },
     "blank": "prazan nalog",
     "more": "Ostali gotovi nalozi",
-    "metaTitle": "{title} — Uplatnica CG",
+    "metaTitle": "{title} | Uplatnica CG",
     "notes": "Napomene",
     "sources": "Izvori",
     "checked": "Podaci provjereni {date}. Prije plaćanja uporedite ih sa rješenjem ili računom."
