@@ -30,8 +30,10 @@ const boxPos = (b: SlipBox) => pos(b.x, b.y, b.w, b.h)
 
 /** Centred on the drawn tick box, with a hit area of at least 24 × 24 px. */
 const tickPos = (key: keyof typeof TICKS) => ({
-  left: `${((TICKS[key].box + TICK.size / 2) / 210) * 100}%`,
-  top: `${((TICK.y + TICK.size / 2) / 99) * 100}%`,
+  left: `${((TICKS[key].box + TICKS[key].w / 2) / 210) * 100}%`,
+  top: `${((TICK.y + TICK.h / 2) / 99) * 100}%`,
+  width: `max(24px, calc(${TICKS[key].w} * var(--u)))`,
+  height: `max(24px, calc(${TICK.h} * var(--u)))`,
 })
 
 const label = (key: keyof SlipForm) => t(slipFieldLabel(key))
@@ -173,8 +175,6 @@ const inputmode = (b: SlipBox) => (b.key === 'amount' ? 'decimal' : b.mono && b.
 .ticks { position: absolute; inset: 0; margin: 0; padding: 0; border: 0; min-width: 0; pointer-events: none; }
 .tick {
   position: absolute;
-  width: max(24px, calc(7 * var(--u)));
-  height: max(24px, calc(7 * var(--u)));
   transform: translate(-50%, -50%);
   display: grid; place-items: center;
   background: rgb(29 91 191 / .05);
@@ -185,5 +185,5 @@ const inputmode = (b: SlipBox) => (b.key === 'amount' ? 'decimal' : b.mono && b.
 .tick:hover:not(.off) { background: rgb(29 91 191 / .09); }
 .tick:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: -2px; background: #fff; }
 .tick.off { cursor: default; background: transparent; }
-.mark { font-size: calc(6 * var(--u)); line-height: 1; color: #000; }
+.mark { font-size: calc(5 * var(--u)); line-height: 1; color: #000; }
 </style>
