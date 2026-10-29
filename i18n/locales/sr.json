@@ -94,7 +94,7 @@
     "categories": { "taxes": "Porezi", "local": "Opštine", "fines": "Kazne", "documents": "Dokumenta" },
     "blank": "prazan nalog",
     "more": "Ostali gotovi nalozi",
-    "metaTitle": "{title} | Uplatnica CG",
+    "metaTitle": "{title} {'|'} Uplatnica CG",
     "notes": "Napomene",
     "sources": "Izvori",
     "checked": "Podaci provjereni {date}. Prije plaćanja uporedite ih sa rješenjem ili računom."
@@ -171,7 +171,7 @@
   },
   "privacy": {
     "title": "Politika privatnosti",
-    "metaTitle": "Politika privatnosti | Uplatnica CG",
+    "metaTitle": "Politika privatnosti {'|'} Uplatnica CG",
     "metaDescription": "Kako Uplatnica CG postupa sa podacima: nacrt naloga ostaje u vašem pregledaču i ništa se ne šalje na server.",
     "dataTitle": "Podaci koje unosite",
     "data": "Podaci sa naloga (primalac, račun, iznos, poziv na broj) ostaju u vašem pregledaču. Nacrt, spisak naloga za štampu i izabrani jezik čuvaju se samo u localStorage na vašem uređaju. Sajt ih ne šalje na server, nema naloga ni baze podataka. Brisanjem podataka sajta u pregledaču brišu se i oni.",
@@ -184,5 +184,37 @@
     "donate": "Donacije idu direktno navedenim platnim uslugama i banci. Sajt ih ne obrađuje i ne čuva podatke o uplatiocima.",
     "contactTitle": "Kontakt",
     "contact": "Pitanja o podacima:"
+  },
+  "howTo": {
+    "title": "Kako popuniti nalog za plaćanje",
+    "templateTitle": "Kako popuniti ovaj nalog",
+    "kind": "Vrsta naloga",
+    "reference": "Poziv na broj",
+    "steps": {
+      "payer": {
+        "title": "Naziv platioca i svrha plaćanja",
+        "text": "Fizičko lice upisuje ime, prezime i adresu, pravno lice ili preduzetnik naziv i sjedište. Svrha kratko opisuje plaćanje. Za oba polja obrazac ima tri reda po 35 znakova."
+      },
+      "payee": {
+        "title": "Naziv primaoca plaćanja",
+        "text": "Naziv primaoca, onako kako piše na rješenju ili računu."
+      },
+      "kind": {
+        "title": "Uplata ili prenos",
+        "text": "„Uplata” je gotovina na šalteru, pa se račun platioca ne upisuje. Za „Prenos” sa svog računa upišite račun platioca; oznaka „Hitnost” šalje novac instant prenosom. Mjesto i datum podnošenja upisuje platilac, a datum izvršenja banka."
+      },
+      "amount": {
+        "title": "Iznos i šifra plaćanja",
+        "text": "Iznos je u eurima, sa dvije decimale iza zareza, npr. 12.000,00. Šifra plaćanja (3 cifre) upisuje se po potrebi; za novčane kazne Naredba o načinu uplate javnih prihoda propisuje 300."
+      },
+      "account": {
+        "title": "Račun primaoca",
+        "text": "18 cifara: 3 cifre pružaoca platnih usluga, 13 cifara računa i 2 kontrolne cifre po modulu 97. Na papiru se piše sa crticama, bez vodećih nula u sredini, npr. 820-30000-74, jedinstveni račun poreza i doprinosa."
+      },
+      "reference": {
+        "title": "Model 18 i poziv na broj",
+        "text": "Za poreze, doprinose i lokalne prihode model je 18. U poziv na broj odobrenja ide PIB (8 cifara) ili JMB (13 cifara), crtica i šifra opštine od 3 cifre, npr. 02088762-302 za Podgoricu. U poziv na broj zaduženja ide poreski period. Uprava carina, MUP i Uprava policije koriste model 05."
+      }
+    }
   }
 }

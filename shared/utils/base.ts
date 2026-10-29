@@ -33,3 +33,8 @@ export function siteOrigin(siteUrl: string, base: string): string {
   const path = normalizeBase(base).slice(0, -1)
   return path && url.endsWith(path) ? url.slice(0, -path.length) : url
 }
+
+/** "/en/pdv" → "/en/pdv/"; a query or hash is not expected here. */
+export function ensureTrailingSlash(path: string): string {
+  return path.endsWith('/') ? path : `${path}/`
+}

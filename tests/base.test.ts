@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { normalizeBase, siteOrigin, stripBase, withBase } from '../shared/utils/base'
+import { ensureTrailingSlash, normalizeBase, siteOrigin, stripBase, withBase } from '../shared/utils/base'
 
 describe('base path', () => {
   it('normalizes to slashes on both sides', () => {
@@ -33,5 +33,10 @@ describe('site origin', () => {
     expect(siteOrigin('https://uplatnica.rs', '/')).toBe('https://uplatnica.rs')
     expect(siteOrigin('https://uplatnica.rs/', '/')).toBe('https://uplatnica.rs')
     expect(siteOrigin('https://uplatnica.rs', '/uplatnica/')).toBe('https://uplatnica.rs')
+  })
+  it('ends page paths with a slash once', () => {
+    expect(ensureTrailingSlash('/')).toBe('/')
+    expect(ensureTrailingSlash('/en')).toBe('/en/')
+    expect(ensureTrailingSlash('/en/pasos/')).toBe('/en/pasos/')
   })
 })

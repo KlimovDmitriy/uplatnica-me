@@ -94,7 +94,7 @@
     "categories": { "taxes": "Taxes", "local": "Municipalities", "fines": "Fines", "documents": "Documents" },
     "blank": "blank order",
     "more": "Other ready-made orders",
-    "metaTitle": "{title} | Uplatnica CG",
+    "metaTitle": "{title} {'|'} Uplatnica CG",
     "notes": "Notes",
     "sources": "Sources",
     "checked": "Data checked {date}. Compare it with your decision or bill before paying."
@@ -171,7 +171,7 @@
   },
   "privacy": {
     "title": "Privacy policy",
-    "metaTitle": "Privacy policy | Uplatnica CG",
+    "metaTitle": "Privacy policy {'|'} Uplatnica CG",
     "metaDescription": "How Uplatnica CG handles data: the order draft stays in your browser and nothing is sent to a server.",
     "dataTitle": "What you enter",
     "data": "The payment order details (payee, account, amount, reference) stay in your browser. The draft, the print batch and the chosen language are kept only in localStorage on your device. The site sends none of it to a server and has no accounts or database. Clearing the site data in your browser deletes it.",
@@ -184,5 +184,37 @@
     "donate": "Donations go directly to the listed payment providers and bank. The site does not process them and keeps no data about donors.",
     "contactTitle": "Contact",
     "contact": "Questions about data:"
+  },
+  "howTo": {
+    "title": "How to fill in a Montenegrin payment order",
+    "templateTitle": "How to fill in this order",
+    "kind": "Order type",
+    "reference": "Reference number",
+    "steps": {
+      "payer": {
+        "title": "Payer and purpose",
+        "text": "An individual writes their name and address; a company or sole trader writes its name and seat. The purpose briefly describes the payment. The form gives both fields three lines of 35 characters."
+      },
+      "payee": {
+        "title": "Payee",
+        "text": "The payee's name as written on the decision or invoice."
+      },
+      "kind": {
+        "title": "Uplata or Prenos",
+        "text": "“Uplata” is cash at the counter, so the payer account stays empty. For “Prenos” from your own account write the payer account; the “Hitnost” mark sends the money as an instant transfer. The payer writes the place and date of submission, the bank the execution date."
+      },
+      "amount": {
+        "title": "Amount and payment code",
+        "text": "The amount is in euros, with two decimals after a comma, e.g. 12.000,00. The three-digit payment code is filled in when needed; for fines the Order on paying public revenues (Naredba) prescribes 300."
+      },
+      "account": {
+        "title": "Payee account",
+        "text": "18 digits: 3 for the payment service provider, 13 for the account and 2 check digits computed with mod 97. On paper it is written with dashes and without leading zeros in the middle, e.g. 820-30000-74, the single account for income tax and contributions."
+      },
+      "reference": {
+        "title": "Model 18 and reference number",
+        "text": "Taxes, contributions and local revenues use model 18. The credit reference is the PIB (8 digits) or JMB (13 digits), a dash and the 3-digit municipality code, e.g. 02088762-302 for Podgorica. The debit reference holds the tax period. Customs, the Ministry of Interior (MUP) and the Police Directorate use model 05."
+      }
+    }
   }
 }

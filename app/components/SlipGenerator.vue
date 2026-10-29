@@ -23,8 +23,15 @@ restore(!!props.persist)
 <template>
   <section
     class="panel generator"
-    :aria-label="t('nav.generator')"
+    aria-labelledby="generator-title"
   >
+    <!-- Not shown: the form speaks for itself, but the outline needs an h2 above "Preview" (h3). -->
+    <h2
+      id="generator-title"
+      class="sr-only"
+    >
+      {{ t('nav.generator') }}
+    </h2>
     <div class="head no-print">
       <fieldset class="choice segmented kind">
         <legend class="sr-only">

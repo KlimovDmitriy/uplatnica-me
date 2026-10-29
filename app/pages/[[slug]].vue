@@ -13,7 +13,8 @@ import PrivacyPolicy from '~/components/PrivacyPolicy.vue'
 definePageMeta({ key: route => splitLangPrefix(route.path).path })
 
 const route = useRoute()
-const { t, locale } = useI18n()
+const { t, localeProperties } = useI18n()
+const pageUrl = usePageUrl()
 const l = useLocalized()
 
 const slug = String(route.params.slug ?? '')
@@ -35,7 +36,7 @@ usePageSeo({
     return full.length <= 60 ? full : plain
   },
   description: () => (template ? l(template.metaDescription) : info ? t(`${info.prefix}.metaDescription`) : t('meta.description')),
-  breadcrumb: template ? [{ name: () => l(template.name) }] : info ? [{ name: () => t(`${info.prefix}.title`) }] : undefined,
+  breadcrumb: template ? () => l(template.name) : info ? () => t(`${info.prefix}.title`) : undefined,
 })
 
 // The app and its FAQ belong to the home page; template pages are plain pages with a breadcrumb.
@@ -45,10 +46,14 @@ useSchemaOrg(template || info
       defineWebPage({ '@type': ['WebPage', 'FAQPage'] }),
       defineSoftwareApp({
         name: () => t('meta.appName'),
+        description: () => t('meta.description'),
+        url: () => pageUrl(splitLangPrefix(route.path).code, '/'),
         applicationCategory: 'FinanceApplication',
         operatingSystem: 'Web',
-        inLanguage: () => locale.value,
+        inLanguage: () => localeProperties.value.language,
+        isAccessibleForFree: true,
         offers: { price: 0, priceCurrency: 'EUR' },
+        author: { '@id': `${useSiteUrl()}/#author` },
       }),
       ...FAQ.map(k => defineQuestion({
         name: () => t(`faq.${k}.q`),
@@ -104,6 +109,12 @@ useSchemaOrg(template || info
         :persist="!template"
       />
 
+      <SlipHowTo
+        v-if="template"
+        class="no-print"
+        :template="template"
+      />
+
       <TemplateSources
         v-if="template"
         class="no-print"
@@ -145,6 +156,11 @@ useSchemaOrg(template || info
         </h2>
         <AccountCheck />
       </section>
+
+      <SlipHowTo
+        v-if="!template"
+        class="no-print"
+      />
 
       <FaqSection
         v-if="!template"
