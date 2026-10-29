@@ -4,8 +4,12 @@
  * build time, see .env.example and app/composables/useDonate.ts.
  */
 export interface DonateLink {
-  id: 'kofi' | 'github-sponsors'
+  id: 'kofi' | 'github-sponsors' | 'donatepay' | 'donationalerts'
   label: string
+  /** Shown only in these languages; omitted = everywhere. */
+  locales?: string[]
+  /** Key under `donate.` of a short hint shown next to the link (exists in those languages only). */
+  hint?: string
 }
 
 export type CryptoFamilyId = 'tron' | 'ton' | 'solana' | 'evm'
@@ -33,6 +37,9 @@ export const donateConfig = {
   links: [
     { id: 'kofi', label: 'Ko-fi' }, // needs PayPal or Stripe on the receiving side
     { id: 'github-sponsors', label: 'GitHub Sponsors' },
+    // Russian-speaking visitors only: they pay with Russian bank cards, which Ko-fi and GitHub don't take.
+    { id: 'donatepay', label: 'DonatePay', locales: ['ru'], hint: 'ruCardsHint' },
+    { id: 'donationalerts', label: 'DonationAlerts', locales: ['ru'], hint: 'ruCardsHint' },
   ] satisfies DonateLink[],
 
   // Low-fee stablecoin networks only.

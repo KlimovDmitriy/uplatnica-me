@@ -139,7 +139,7 @@
   "donate": {
     "button": "Zahvali autoru",
     "title": "Zahvali autoru",
-    "lead": "Sajt je besplatan i bez reklama. Ako vam je koristio, možete podržati dalji razvoj.",
+    "lead": "Sajt je besplatan. Ako vam je koristio, možete podržati dalji razvoj.",
     "tabs": {
       "sepa": "SEPA (EUR)",
       "card": "Kartica",
@@ -161,7 +161,28 @@
   "nav": {
     "generator": "Nalog za plaćanje",
     "info": "Informacije i podrška",
+    "infoPlain": "Informacije",
+    "privacy": "Privatnost",
     "skip": "Pređi na sadržaj",
     "languages": "Jezik"
+  },
+  "ads": {
+    "label": "Oglas"
+  },
+  "privacy": {
+    "title": "Politika privatnosti",
+    "metaTitle": "Politika privatnosti | Uplatnica CG",
+    "metaDescription": "Kako Uplatnica CG postupa sa podacima: nacrt naloga ostaje u vašem pregledaču i ništa se ne šalje na server.",
+    "dataTitle": "Podaci koje unosite",
+    "data": "Podaci sa naloga (primalac, račun, iznos, poziv na broj) ostaju u vašem pregledaču. Nacrt, spisak naloga za štampu i izabrani jezik čuvaju se samo u localStorage na vašem uređaju. Sajt ih ne šalje na server, nema naloga ni baze podataka. Brisanjem podataka sajta u pregledaču brišu se i oni.",
+    "analyticsTitle": "Statistika posjeta",
+    "analytics": "Posjete se broje pomoću Plausible: bez kolačića, bez ličnih podataka i bez praćenja između sajtova.",
+    "adsTitle": "Reklame",
+    "ads": "Sajt prikazuje reklame preko Google AdSense. Google i njegovi partneri mogu koristiti kolačiće i slične tehnologije za prikaz i mjerenje reklama. Pristankom upravljate preko Google poruke o saglasnosti.",
+    "adsLink": "Kako Google koristi podatke sa sajtova partnera",
+    "donateTitle": "Donacije",
+    "donate": "Donacije idu direktno navedenim platnim uslugama i banci. Sajt ih ne obrađuje i ne čuva podatke o uplatiocima.",
+    "contactTitle": "Kontakt",
+    "contact": "Pitanja o podacima:"
   }
 }

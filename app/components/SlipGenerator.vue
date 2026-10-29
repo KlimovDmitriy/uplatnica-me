@@ -64,6 +64,7 @@ restore(!!props.persist)
 
     <SlipErrors class="no-print" />
     <SlipActions class="no-print" />
+    <AdSlot name="after-slip" />
     <BatchPanel class="no-print" />
   </section>
 </template>

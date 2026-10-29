@@ -5,6 +5,8 @@
  */
 import { findTemplate } from '~/data/templates'
 import { FAQ } from '~/data/faq'
+import { findInfoPage } from '~/data/pages'
+import PrivacyPolicy from '~/components/PrivacyPolicy.vue'
 
 // A fresh page per URL, so everything below is set up once for its slug. The language prefix is not
 // part of the key: switching language keeps the page, and with it the slip being edited.
@@ -16,7 +18,9 @@ const l = useLocalized()
 
 const slug = String(route.params.slug ?? '')
 const template = slug ? findTemplate(slug) : undefined
-if (slug && !template) throw createError({ statusCode: 404, statusMessage: 'Not found', fatal: true })
+const info = slug ? findInfoPage(slug) : undefined
+const INFO_COMPONENTS = { PrivacyPolicy }
+if (slug && !template && !info) throw createError({ statusCode: 404, statusMessage: 'Not found', fatal: true })
 
 const active = ref(template?.payments[0]?.id ?? '')
 const payment = computed(() => template?.payments.find(p => p.id === active.value))
@@ -25,17 +29,17 @@ usePageSeo({
   // The "| Uplatnica CG" suffix only while the title stays within ~60 characters, which is what
   // search results show.
   title: () => {
-    if (!template) return t('meta.title')
+    if (!template) return info ? t(`${info.prefix}.metaTitle`) : t('meta.title')
     const plain = l(template.title)
     const full = t('templates.metaTitle', { title: plain })
     return full.length <= 60 ? full : plain
   },
-  description: () => (template ? l(template.metaDescription) : t('meta.description')),
-  breadcrumb: template && [{ name: () => l(template.name) }],
+  description: () => (template ? l(template.metaDescription) : info ? t(`${info.prefix}.metaDescription`) : t('meta.description')),
+  breadcrumb: template ? [{ name: () => l(template.name) }] : info ? [{ name: () => t(`${info.prefix}.title`) }] : undefined,
 })
 
 // The app and its FAQ belong to the home page; template pages are plain pages with a breadcrumb.
-useSchemaOrg(template
+useSchemaOrg(template || info
   ? [defineWebPage()]
   : [
       defineWebPage({ '@type': ['WebPage', 'FAQPage'] }),
@@ -64,8 +68,8 @@ useSchemaOrg(template
           ← {{ t('templates.blank') }}
         </LangLink>
       </p>
-      <h1>{{ template ? l(template.title) : t('hero.title') }}</h1>
-      <template v-if="!template">
+      <h1>{{ template ? l(template.title) : info ? t(`${info.prefix}.title`) : t('hero.title') }}</h1>
+      <template v-if="!template && !info">
         <p class="lead">
           {{ t('hero.lead') }}
         </p>
@@ -75,68 +79,78 @@ useSchemaOrg(template
       </template>
     </header>
 
-    <TemplatePicker
-      v-if="!template"
+    <component
+      :is="INFO_COMPONENTS[info.component]"
+      v-if="info"
       class="no-print"
     />
 
-    <TemplateDetails
-      v-if="template"
-      v-model="active"
-      class="no-print"
-      :template="template"
-    />
+    <template v-else>
+      <TemplatePicker
+        v-if="!template"
+        class="no-print"
+      />
 
-    <SlipGenerator
-      id="generator"
-      :preset="payment?.preset"
-      :persist="!template"
-    />
+      <TemplateDetails
+        v-if="template"
+        v-model="active"
+        class="no-print"
+        :template="template"
+      />
 
-    <TemplateSources
-      v-if="template"
-      class="no-print"
-      :template="template"
-    />
+      <SlipGenerator
+        id="generator"
+        :preset="payment?.preset"
+        :persist="!template"
+      />
 
-    <TemplatePicker
-      v-if="template"
-      class="no-print"
-      :current="template.slug"
-      more
-    />
+      <TemplateSources
+        v-if="template"
+        class="no-print"
+        :template="template"
+      />
 
-    <section
-      v-if="!template"
-      id="poziv-na-broj"
-      class="card no-print tool"
-      aria-labelledby="reference-title"
-    >
-      <h2 id="reference-title">
-        {{ t('reference.title') }}
-      </h2>
-      <p class="lead">
-        {{ t('reference.lead') }}
-      </p>
-      <ReferenceBuilder />
-      <MunicipalityCodes />
-    </section>
+      <AdSlot name="content" />
 
-    <section
-      id="provjera-racuna"
-      class="card no-print tool"
-      aria-labelledby="account-title"
-    >
-      <h2 id="account-title">
-        {{ t('account.title') }}
-      </h2>
-      <AccountCheck />
-    </section>
+      <TemplatePicker
+        v-if="template"
+        class="no-print"
+        :current="template.slug"
+        more
+      />
 
-    <FaqSection
-      v-if="!template"
-      class="no-print"
-    />
+      <section
+        v-if="!template"
+        id="poziv-na-broj"
+        class="card no-print tool"
+        aria-labelledby="reference-title"
+      >
+        <h2 id="reference-title">
+          {{ t('reference.title') }}
+        </h2>
+        <p class="lead">
+          {{ t('reference.lead') }}
+        </p>
+        <ReferenceBuilder />
+        <MunicipalityCodes />
+      </section>
+
+      <section
+        id="provjera-racuna"
+        class="card no-print tool"
+        aria-labelledby="account-title"
+      >
+        <h2 id="account-title">
+          {{ t('account.title') }}
+        </h2>
+        <AccountCheck />
+      </section>
+
+      <FaqSection
+        v-if="!template"
+        class="no-print"
+      />
+    </template>
   </div>
 </template>
 

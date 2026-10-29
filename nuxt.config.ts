@@ -2,6 +2,7 @@ import type { NuxtPage } from 'nuxt/schema'
 import { PREFIXED_LOCALES } from './shared/utils/lang'
 
 const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://uplatnica.example.me'
+const adsenseOn = process.env.NUXT_PUBLIC_ADS_PROVIDER === 'adsense'
 
 export default defineNuxtConfig({
   compatibilityDate: '2026-09-01',
@@ -52,8 +53,15 @@ export default defineNuxtConfig({
       yandexVerification: '',
       plausibleDomain: '',
       plausibleSrc: 'https://plausible.io/js/script.js',
+      // Ads (NUXT_PUBLIC_ADS_PROVIDER): empty = no ads at all, "adsense" = Google AdSense slots.
+      adsProvider: '',
+      adsenseClient: '',
+      adsenseSlotAfterSlip: '',
+      adsenseSlotContent: '',
+      // Contact e-mail on the privacy page, shown only if set.
+      contactEmail: '',
       // "Support the author" details (NUXT_PUBLIC_DONATE_*). Empty methods are hidden, with none
-      // set the donate button disappears.
+      // visible in a language the donate button disappears there.
       donate: {
         sepaIban: '',
         sepaBic: '',
@@ -61,6 +69,10 @@ export default defineNuxtConfig({
         sepaBank: '',
         kofi: '',
         githubSponsors: '',
+        // NUXT_PUBLIC_DONATE_DONATEPAY / _DONATIONALERTS: one word each, so the keys stay lowercase
+        // (an env name is matched against the camelCase key split at capitals). ru only.
+        donatepay: '',
+        donationalerts: '',
         cryptoTron: '',
         cryptoTon: '',
         cryptoSolana: '',
@@ -101,7 +113,8 @@ export default defineNuxtConfig({
   nitro: {
     prerender: {
       crawlLinks: true,
-      routes: ['/', ...PREFIXED_LOCALES.map(code => `/${code}`)],
+      // ads.txt exists only when AdSense is on (server/routes/ads.txt.ts answers 404 otherwise).
+      routes: ['/', ...PREFIXED_LOCALES.map(code => `/${code}`), ...(adsenseOn ? ['/ads.txt'] : [])],
     },
   },
 })

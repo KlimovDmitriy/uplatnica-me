@@ -2,6 +2,7 @@
 /** Mobile counterpart of the desktop footer bar: the same SiteInfo in a native <dialog>. */
 const emit = defineEmits<{ donate: [] }>()
 const { t } = useI18n()
+const donate = useDonate()
 const dialog = ref<HTMLDialogElement>()
 const shown = ref(false)
 
@@ -34,7 +35,7 @@ defineExpose({ open })
   >
     <header>
       <h2 id="info-title">
-        {{ t('nav.info') }}
+        {{ donate.enabled ? t('nav.info') : t('nav.infoPlain') }}
       </h2>
       <button
         type="button"

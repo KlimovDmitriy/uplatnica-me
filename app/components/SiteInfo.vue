@@ -1,8 +1,10 @@
 <script setup lang="ts">
 /** Footer content (info links, disclaimer, donate): the desktop bar and the mobile dialog both render it. */
+import { INFO_PAGES } from '~/data/pages'
+
 defineEmits<{ donate: [] }>()
 const { t } = useI18n()
-const { enabled: donateEnabled } = useDonate()
+const donate = useDonate()
 </script>
 
 <template>
@@ -14,6 +16,13 @@ const { enabled: donateEnabled } = useDonate()
       <LangLink to="/#provjera-racuna">
         {{ t('account.title') }}
       </LangLink>
+      <LangLink
+        v-for="page in INFO_PAGES"
+        :key="page.slug"
+        :to="`/${page.slug}`"
+      >
+        {{ t(`nav.${page.nav}`) }}
+      </LangLink>
     </p>
     <p
       class="disclaimer"
@@ -22,7 +31,7 @@ const { enabled: donateEnabled } = useDonate()
       {{ t('footer.disclaimer') }}
     </p>
     <button
-      v-if="donateEnabled"
+      v-if="donate.enabled"
       type="button"
       class="btn small donate"
       @click="$emit('donate')"

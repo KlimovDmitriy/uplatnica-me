@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { t } = useI18n()
-const { enabled: donateEnabled } = useDonate()
+const donateState = useDonate()
 const donate = ref<{ open: () => void }>()
 const info = ref<{ open: () => void }>()
 </script>
@@ -24,7 +24,7 @@ const info = ref<{ open: () => void }>()
           <button
             type="button"
             class="info-btn narrow-only"
-            :aria-label="t('nav.info')"
+            :aria-label="donateState.enabled ? t('nav.info') : t('nav.infoPlain')"
             @click="info?.open()"
           >
             <svg
@@ -62,7 +62,7 @@ const info = ref<{ open: () => void }>()
     />
 
     <DonateDialog
-      v-if="donateEnabled"
+      v-if="donateState.enabled"
       ref="donate"
     />
     <ClientOnly>
