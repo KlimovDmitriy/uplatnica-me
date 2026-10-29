@@ -25,6 +25,6 @@ logs
 
 # Local only: docs and assistant instructions are not part of the repo
 docs/
-README.md
+NOTES.md
 CLAUDE.md
 .claude/
