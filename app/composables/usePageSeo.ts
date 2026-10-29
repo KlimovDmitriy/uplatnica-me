@@ -14,13 +14,14 @@ const OG_LOCALE: Record<string, string> = { sr: 'sr_ME', en: 'en_US', ru: 'ru_RU
  */
 export function usePageSeo({ title, description, breadcrumb }: PageSeo) {
   const { t, locales } = useI18n()
-  const siteUrl = useSiteConfig().url.replace(/\/$/, '')
+  const siteUrl = useSiteUrl()
   const localePath = useLangPath()
   const route = useRoute()
 
   const parts = computed(() => splitLangPrefix(route.path))
   const pageLocale = computed(() => parts.value.code ?? DEFAULT_LOCALE)
-  const url = (code: string) => siteUrl + withLangPrefix(code, parts.value.path)
+  // Hosts that redirect "/x" to "/x/" (GitHub Pages) leave a trailing slash in route.path; the canonical has none.
+  const url = (code: string) => siteUrl + withLangPrefix(code, parts.value.path.replace(/(.)\/$/, '$1'))
   const ogImage = computed(() => `${siteUrl}/og/${pageLocale.value}.png`)
 
   useHead({

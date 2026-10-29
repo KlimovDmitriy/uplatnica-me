@@ -1,7 +1,16 @@
+import { mkdirSync, writeFileSync } from 'node:fs'
+import { join } from 'node:path'
 import type { NuxtPage } from 'nuxt/schema'
 import { PREFIXED_LOCALES } from './shared/utils/lang'
+import { normalizeBase, siteOrigin } from './shared/utils/base'
 
-const siteUrl = process.env.NUXT_PUBLIC_SITE_URL || 'https://uplatnica.example.me'
+// Sub-path hosting (GitHub Pages: /uplatnica-me/); the default is the root of a domain. NUXT_PUBLIC_SITE_URL
+// then carries the same path (https://host/uplatnica-me).
+const baseURL = normalizeBase(process.env.NUXT_APP_BASE_URL)
+// The sitemap and schema.org modules append the base path themselves, so they get the origin only.
+const siteUrl = siteOrigin(process.env.NUXT_PUBLIC_SITE_URL || 'https://uplatnica.example.me', baseURL)
+// Staging: NUXT_PUBLIC_NOINDEX=1 adds <meta name="robots" content="noindex, nofollow"> on every page and "Disallow: /".
+const noindex = ['1', 'true'].includes((process.env.NUXT_PUBLIC_NOINDEX ?? '').trim().toLowerCase())
 const adsenseOn = process.env.NUXT_PUBLIC_ADS_PROVIDER === 'adsense'
 
 export default defineNuxtConfig({
@@ -38,6 +47,12 @@ export default defineNuxtConfig({
         }
       }
     },
+  },
+
+  // A robots.txt is only read at the root of a host, so the module skips it under a sub-path. Staging
+  // there still gets a Disallow: / copy (the meta tag is what counts until the site has its own domain).
+  robots: {
+    robotsTxt: baseURL === '/',
   },
 
   // Language alternates are written into every page's <head> by usePageSeo (the sitemap module's
@@ -84,11 +99,13 @@ export default defineNuxtConfig({
   site: {
     url: siteUrl,
     name: 'Uplatnica CG',
+    indexable: !noindex,
   },
 
   app: {
+    baseURL,
     head: {
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: `${baseURL}favicon.svg` }],
       meta: [{ name: 'theme-color', content: '#ffffff' }],
     },
   },
@@ -111,6 +128,13 @@ export default defineNuxtConfig({
   // Fully static: every page in every language is prerendered. The crawler starts from each
   // language's home page and follows its in-language links.
   nitro: {
+    hooks: {
+      compiled(nitro) {
+        if (!noindex || baseURL === '/') return
+        mkdirSync(nitro.options.output.publicDir, { recursive: true })
+        writeFileSync(join(nitro.options.output.publicDir, 'robots.txt'), 'User-agent: *\nDisallow: /\n')
+      },
+    },
     prerender: {
       crawlLinks: true,
       // ads.txt exists only when AdSense is on (server/routes/ads.txt.ts answers 404 otherwise).

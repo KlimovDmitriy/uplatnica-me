@@ -1,0 +1,82 @@
+# main -> production: GitHub Pages of this repo (actions/deploy-pages).
+# dev  -> staging: built files pushed to the gh-pages branch of KlimovDmitriy/uplatnica-me-staging.
+#
+# Build settings (base path, site URL, donate details, NOINDEX) are not in this file: they come from the
+# environment variable DOTENV of the GitHub Environment "production" (main) or "staging" (dev),
+# written to .env before the build. Examples: .env.production.example, .env.staging.example.
+name: Deploy
+
+on:
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      - run: npx nuxi typecheck
+
+  build:
+    # Manual runs of other branches build nothing: only main and dev have a target.
+    if: github.ref_name == 'main' || github.ref_name == 'dev'
+    needs: check
+    runs-on: ubuntu-latest
+    environment: ${{ github.ref_name == 'main' && 'production' || 'staging' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Write .env from the DOTENV variable
+        env:
+          DOTENV: ${{ vars.DOTENV }}
+        run: |
+          if [ -n "$DOTENV" ]; then printf '%s\n' "$DOTENV" > .env; else : > .env; fi
+      - run: npm run generate
+      - name: Upload Pages artifact
+        if: github.ref_name == 'main'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .output/public
+      - name: Publish to the staging repository
+        if: github.ref_name == 'dev'
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          deploy_key: ${{ secrets.STAGING_DEPLOY_KEY }}
+          external_repository: KlimovDmitriy/uplatnica-me-staging
+          publish_branch: gh-pages
+          publish_dir: .output/public
+          force_orphan: true
+          user_name: KlimovDmitriy
+          user_email: 59648283+KlimovDmitriy@users.noreply.github.com
+
+  deploy:
+    if: github.ref_name == 'main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

@@ -28,17 +28,18 @@ function save(code: string) {
   catch { /* storage unavailable */ }
 }
 
-/** Replace only the visible URL; Vue Router keeps its own state. */
-function hidePrefix() {
-  const { code, path } = splitLangPrefix(window.location.pathname)
+/** Replace only the visible URL; Vue Router keeps its own state. The site may sit under a base path. */
+function hidePrefix(base: string) {
+  const { code, path } = splitLangPrefix(stripBase(window.location.pathname, base))
   if (!code) return
-  history.replaceState(history.state, '', path + window.location.search + window.location.hash)
+  history.replaceState(history.state, '', withBase(base, path) + window.location.search + window.location.hash)
 }
 
 export default defineNuxtPlugin((nuxtApp) => {
   const i18n = nuxtApp.$i18n
   const router = useRouter()
   const suggested = useLangSuggestion()
+  const base = useRuntimeConfig().app.baseURL
 
   onNuxtReady(async () => {
     if (BOT.test(navigator.userAgent)) return
@@ -61,9 +62,9 @@ export default defineNuxtPlugin((nuxtApp) => {
         if (!dismissed && wanted !== i18n.locale.value) suggested.value = wanted
       }
     }
-    hidePrefix()
+    hidePrefix(base)
 
-    router.afterEach(() => nextTick(hidePrefix))
+    router.afterEach(() => nextTick(() => hidePrefix(base)))
     watch(i18n.locale, save)
   })
 })

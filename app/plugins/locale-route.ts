@@ -7,7 +7,7 @@ export default defineNuxtPlugin({
   name: 'uplatnica-me:locale-route',
   dependsOn: ['i18n:plugin', 'i18n:plugin:route-locale-detect'],
   async setup(nuxtApp) {
-    const { code } = splitLangPrefix(useRequestURL().pathname)
+    const { code } = splitLangPrefix(stripBase(useRequestURL().pathname, useRuntimeConfig().app.baseURL))
     if (code && code !== nuxtApp.$i18n.locale.value) {
       await nuxtApp.$i18n.setLocale(code)
     }

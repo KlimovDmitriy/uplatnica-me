@@ -2,13 +2,14 @@
 // Keeps <html lang> in sync with the language chosen on the client.
 const head = useLocaleHead({ seo: false })
 const config = useRuntimeConfig().public
+const base = useRuntimeConfig().app.baseURL
 
 useHead({
   htmlAttrs: { lang: () => head.value.htmlAttrs?.lang },
   link: () => [
     ...(head.value.link ?? []),
-    { rel: 'manifest', href: '/manifest.webmanifest' },
-    { rel: 'apple-touch-icon', href: '/icons/apple-touch-icon.png' },
+    { rel: 'manifest', href: `${base}manifest.webmanifest` },
+    { rel: 'apple-touch-icon', href: `${base}icons/apple-touch-icon.png` },
   ],
   meta: () => [
     ...(head.value.meta ?? []),
@@ -21,7 +22,7 @@ useHead({
 })
 
 onMounted(() => {
-  if ('serviceWorker' in navigator && !import.meta.dev) navigator.serviceWorker.register('/sw.js').catch(() => {})
+  if ('serviceWorker' in navigator && !import.meta.dev) navigator.serviceWorker.register(`${base}sw.js`, { scope: base }).catch(() => {})
 })
 </script>
 
