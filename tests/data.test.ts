@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { TEMPLATES } from '../app/data/templates'
+import { TEMPLATES, referenceRule } from '../app/data/templates'
 import { BANK_CODES } from '../app/data/bankCodes'
 import { MUNICIPALITIES } from '../shared/utils/municipalities'
 import { LIMITS, isAccountChecksumValid, normalizeAccount } from '../shared/utils/nalog'
@@ -62,5 +62,43 @@ describe('municipalities', () => {
   it('every account prefix is a known bank', () => {
     const codes = new Set(BANK_CODES.map(b => b.code))
     for (const m of MUNICIPALITIES) for (const a of Object.values(m.accounts)) expect(codes.has(a.slice(0, 3)), a).toBe(true)
+  })
+})
+
+describe('referenceRule', () => {
+  const preset = (account: string, model: string) => ({ preset: { account, model } })
+
+  it('requires a reference for models 18 and 05 on a public-revenue account, except MUP (reference given at the counter)', () => {
+    expect(referenceRule(preset('820-30000-74', '18'))).toBe('tax')
+    expect(referenceRule(preset('805-955-02', '05'))).toBe('tax')
+    expect(referenceRule(preset('825-42-95', '05'))).toBeNull()
+    expect(referenceRule({ ...preset('825-42-95', '05'), referenceRequired: true })).toBe('mup')
+    expect(referenceRule(preset('840-80-82', '18'))).toBe('institution')
+    expect(referenceRule(preset('832-20000-46', '18'))).toBe('institution')
+  })
+
+  it('counts a payment with a municipality picker (its account comes later) as public revenue', () => {
+    expect(referenceRule({ preset: { model: '18' }, tool: { localAccount: 'prirez' } })).toBe('institution')
+  })
+
+  it('does not require one for other accounts or models, or without a payment', () => {
+    expect(referenceRule(preset('510-12345-67', '18'))).toBeNull()
+    expect(referenceRule(preset('820-30000-74', '00'))).toBeNull()
+    expect(referenceRule(preset('820-30000-74', ''))).toBeNull()
+    expect(referenceRule(undefined)).toBeNull()
+  })
+
+  it('lets the data override the derivation both ways', () => {
+    expect(referenceRule({ ...preset('820-30000-74', '18'), referenceRequired: false })).toBeNull()
+    expect(referenceRule({ ...preset('510-12345-67', '00'), referenceRequired: true })).toBe('institution')
+  })
+
+  it('applies to every payment of the templates except MUP', () => {
+    for (const tpl of TEMPLATES) {
+      for (const p of tpl.payments) {
+        const mup = p.preset.account?.startsWith('825-')
+        expect(referenceRule(p) === null, `${tpl.slug}/${p.id}`).toBe(!!mup)
+      }
+    }
   })
 })

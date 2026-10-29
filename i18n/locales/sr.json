@@ -53,6 +53,11 @@
     "account": { "required": "Upišite račun primaoca", "invalid": "Račun ima 18 cifara: 510-12345-67 ili IBAN ME25…", "checksum": "Kontrolni broj računa nije ispravan, provjerite cifre" },
     "model": { "invalid": "Model ima 2 cifre" },
     "reference": {
+      "required": {
+        "tax": "Upišite poziv na broj (PIB ili JMB i šifru opštine). Bez njega Uprava prihoda i carina ne može da poveže uplatu sa vama.",
+        "mup": "Upišite poziv na broj koji ste dobili na šalteru MUP-a. Bez njega MUP ne može da poveže uplatu sa vama.",
+        "institution": "Upišite poziv na broj iz rješenja ili uputstva institucije. Bez njega primalac ne može da poveže uplatu sa vama."
+      },
       "tooLong": "Najviše {reference} znakova",
       "invalid": "Dozvoljene su cifre, slova, crtica, kosa crta i razmak",
       "format18": "Za model 18: PIB (8 cifara) ili JMB (13 cifara), crtica i šifra od 3 cifre",
@@ -74,6 +79,8 @@
     "loaded": "Nalog je popunjen iz primljenog linka. Prije plaćanja provjerite račun i iznos."
   },
   "batch": {
+    "missingReference": "Nedostaje poziv na broj",
+    "fixFirst": "Dopunite označene naloge da biste preuzeli PDF.",
     "add": "Dodaj u paket",
     "save": "Sačuvaj izmjene",
     "title": "Paket za štampu",

@@ -26,6 +26,34 @@ export interface TemplatePayment {
   referenceHint?: Localized
   amountNote?: Localized
   tool?: ReferenceTool
+  /**
+   * Overrides whether an empty reference (odobrenje) blocks the order. Left out, it follows
+   * referenceRule(): models 18 and 05 on a public-revenue account need one. Set false where the payee accepts none.
+   */
+  referenceRequired?: boolean
+}
+
+/** Who matches the payment to the payer by its reference; picks the wording of the "reference required" error. */
+export type ReferenceRule = 'tax' | 'mup' | 'institution'
+
+/** Models that Naredba o načinu uplate javnih prihoda (čl. 4) prescribes for public revenue. */
+const REQUIRED_MODELS = ['18', '05']
+
+/**
+ * Public-revenue accounts of the Naredba: 820 (Uprava prihoda), 805 (Uprava carina), 825 (MUP),
+ * 832 (ministries, courts, municipal fines), 840 (Uprava policije). Municipal accounts sit in
+ * ordinary banks (510, 530, 535 ...), so a payment with a municipality picker counts instead.
+ */
+const BUDGET_ACCOUNT = /^(820|805|825|832|840)-/
+
+/** The payer is identified only by the model and the reference, so an empty one cannot be matched. */
+export function referenceRule(payment?: Pick<TemplatePayment, 'preset' | 'tool' | 'referenceRequired'>): ReferenceRule | null {
+  if (!payment) return null
+  const { account = '', model = '' } = payment.preset
+  // MUP (825) gives its 9-digit reference only at the counter, so a slip prepared in advance can't have it.
+  const budget = (BUDGET_ACCOUNT.test(account) && !account.startsWith('825-')) || !!payment.tool?.localAccount
+  if (!(payment.referenceRequired ?? (budget && REQUIRED_MODELS.includes(model)))) return null
+  return /^(820|805)-/.test(account) ? 'tax' : account.startsWith('825-') ? 'mup' : 'institution'
 }
 
 export interface PaymentTemplate {

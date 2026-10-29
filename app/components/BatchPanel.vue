@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { BatchItem } from '~/composables/useBatch'
+
 const { t } = useI18n()
 const { setForm } = useSlip()
 const { items, editing, load, remove, clear } = useBatch()
@@ -6,12 +8,16 @@ const busy = ref(false)
 
 onMounted(load)
 
+/** Stored slips from a template payment whose reference is still empty (they would be useless to the payer). */
+const missing = (it: BatchItem) => !!referenceMissing(it.form.reference, it.referenceRule ?? null)
+const hasMissing = computed(() => items.value.some(missing))
+
 const pages = computed(() => Math.ceil(items.value.length / 3))
 
 function edit(id: string) {
   const item = items.value.find(it => it.id === id)
   if (!item) return
-  setForm(item.form)
+  setForm(item.form, item.referenceRule ?? null)
   editing.value = id
 }
 
@@ -40,7 +46,10 @@ async function download() {
         :key="it.id"
         :class="{ editing: editing === it.id }"
       >
-        <span class="payee"><span class="n">{{ i + 1 }}.</span> {{ it.form.payee.split('\n')[0] || '—' }}</span>
+        <span class="payee"><span class="n">{{ i + 1 }}.</span> {{ it.form.payee.split('\n')[0] || '—' }}<span
+          v-if="missing(it)"
+          class="missing"
+        > ✕ {{ t('batch.missingReference') }}</span></span>
         <span class="num">{{ it.form.amount }}</span>
         <span class="ops">
           <button
@@ -64,7 +73,8 @@ async function download() {
       <button
         type="button"
         class="btn"
-        :disabled="busy"
+        :disabled="busy || hasMissing"
+        :aria-describedby="hasMissing ? 'batch-fix' : undefined"
         @click="download"
       >
         {{ busy ? t('batch.building') : t('batch.download', { n: items.length }) }}
@@ -76,6 +86,13 @@ async function download() {
       >
         {{ t('batch.clear') }}
       </button>
+    </p>
+    <p
+      v-if="hasMissing"
+      id="batch-fix"
+      class="missing"
+    >
+      ✕ {{ t('batch.fixFirst') }}
     </p>
   </section>
 </template>
@@ -91,6 +108,8 @@ h3 small { font-size: var(--fs-md); font-weight: var(--fw-regular); color: var(-
 .batch-list li.editing { background: var(--accent-weak); border-radius: var(--r-sm); padding-inline: var(--s-2); }
 .payee { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .n { color: var(--text-muted); }
+.missing { color: var(--error); }
+p.missing { margin: var(--s-2) 0 0; font-size: var(--fs-sm); }
 .num { text-align: right; white-space: nowrap; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
 .ops { display: flex; gap: var(--s-2); }
 .foot { display: flex; flex-wrap: wrap; gap: var(--s-2); align-items: center; margin: var(--s-4) 0 0; }

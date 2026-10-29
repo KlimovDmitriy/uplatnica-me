@@ -3,7 +3,7 @@
  * The only page. "/" is the blank generator; "/<template>" is the same page with a ready-made
  * order (own title, description and prerendered slip for search engines).
  */
-import { findTemplate } from '~/data/templates'
+import { findTemplate, referenceRule } from '~/data/templates'
 import { FAQ } from '~/data/faq'
 import { findInfoPage } from '~/data/pages'
 import PrivacyPolicy from '~/components/PrivacyPolicy.vue'
@@ -106,6 +106,7 @@ useSchemaOrg(template || info
       <SlipGenerator
         id="generator"
         :preset="payment?.preset"
+        :reference-rule="referenceRule(payment)"
         :persist="!template"
       />
 

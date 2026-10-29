@@ -1,8 +1,11 @@
+import type { ReferenceRule } from '~/data/templates'
 import type { SlipForm } from './useSlip'
 
 export interface BatchItem {
   id: string
   form: SlipForm
+  /** Set when the slip came from a template payment that needs a reference (stored with the slip). */
+  referenceRule?: ReferenceRule
 }
 
 const KEY = 'uplatnica-me:batch:v1'
@@ -29,11 +32,12 @@ export function useBatch() {
   }
 
   /** Adds a new slip, or saves over the one being edited. */
-  function put(form: SlipForm) {
+  function put(form: SlipForm, referenceRule: ReferenceRule | null = null) {
     const snapshot = { ...form }
+    const rule = referenceRule ?? undefined
     const i = items.value.findIndex(it => it.id === editing.value)
-    if (i >= 0) items.value = items.value.map((it, j) => (j === i ? { ...it, form: snapshot } : it))
-    else if (items.value.length < MAX) items.value = [...items.value, { id: crypto.randomUUID(), form: snapshot }]
+    if (i >= 0) items.value = items.value.map((it, j) => (j === i ? { ...it, form: snapshot, referenceRule: rule } : it))
+    else if (items.value.length < MAX) items.value = [...items.value, { id: crypto.randomUUID(), form: snapshot, referenceRule: rule }]
     editing.value = null
     persist()
   }

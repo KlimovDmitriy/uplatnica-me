@@ -53,6 +53,11 @@
     "account": { "required": "Enter the payee account", "invalid": "An account has 18 digits: 510-12345-67, or an IBAN ME25…", "checksum": "The account check digits are wrong, check the number" },
     "model": { "invalid": "The model has 2 digits" },
     "reference": {
+      "required": {
+        "tax": "Enter the reference number (PIB or JMB and the municipality code). Without it the Revenue and Customs Administration cannot link the payment to you.",
+        "mup": "Enter the reference number you got at the Ministry of Interior counter. Without it the Ministry cannot link the payment to you.",
+        "institution": "Enter the reference number from the decision or the institution's instructions. Without it the recipient cannot link the payment to you."
+      },
       "tooLong": "At most {reference} characters",
       "invalid": "Use digits, letters, dash, slash and space",
       "format18": "For model 18: PIB (8 digits) or JMB (13 digits), a dash and a 3-digit code",
@@ -74,6 +79,8 @@
     "loaded": "The order was filled from a shared link. Check the account and amount before paying."
   },
   "batch": {
+    "missingReference": "Reference number missing",
+    "fixFirst": "Fill in the marked orders to download the PDF.",
     "add": "Add to batch",
     "save": "Save changes",
     "title": "Print batch",
